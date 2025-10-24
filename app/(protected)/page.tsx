@@ -1,5 +1,4 @@
 import { ProductList } from "@/components/product-list"
-import { Separator } from "@/components/ui/separator"
 import type { Product } from "@/types/product"
 
 async function getProducts(): Promise<{ products: Product[] }> {
@@ -19,7 +18,6 @@ export default async function Home() {
   return (
     <div className="space-y-4">
       <h1>Products</h1>
-      <Separator />
       <ProductList products={products} />
     </div>
   )

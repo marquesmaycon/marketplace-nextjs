@@ -27,36 +27,34 @@ type ProductListProps = {
 export function ProductList({ products }: ProductListProps) {
   const { addItem } = useCart()
   return (
-    <div>
-      <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((pd) => (
-          <Item key={pd.name} variant="outline">
-            <ItemHeader>
-              <Image
-                src={pd.image}
-                alt={pd.name}
-                width={200}
-                height={200}
-                className="aspect-square w-full rounded-sm object-cover"
-              />
-            </ItemHeader>
-            <ItemContent>
-              <ItemTitle>
-                <span>{pd.name}</span>
-                <Badge className="bg-green-700">{formatPrice(pd.price)}</Badge>
-              </ItemTitle>
-              <ItemDescription>{pd.description}</ItemDescription>
-            </ItemContent>
-            <ItemFooter>
-              <ItemActions>
-                <Button size="sm" onClick={() => addItem(pd)}>
-                  Add to Cart <Plus />
-                </Button>
-              </ItemActions>
-            </ItemFooter>
-          </Item>
-        ))}
-      </ItemGroup>
-    </div>
+    <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      {products.map((pd) => (
+        <Item key={pd.name} variant="outline">
+          <ItemHeader>
+            <Image
+              src={pd.image}
+              alt={pd.name}
+              width={200}
+              height={200}
+              className="aspect-square w-full rounded-sm object-cover"
+            />
+          </ItemHeader>
+          <ItemContent>
+            <ItemTitle>
+              <span>{pd.name}</span>
+              <Badge className="bg-sky-magenta">{formatPrice(pd.price)}</Badge>
+            </ItemTitle>
+            <ItemDescription>{pd.description}</ItemDescription>
+          </ItemContent>
+          <ItemFooter>
+            <ItemActions>
+              <Button size="sm" onClick={() => addItem(pd)}>
+                Add to Cart <Plus />
+              </Button>
+            </ItemActions>
+          </ItemFooter>
+        </Item>
+      ))}
+    </ItemGroup>
   )
 }

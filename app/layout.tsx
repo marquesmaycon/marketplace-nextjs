@@ -30,7 +30,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-          <footer className="mt-auto">
+          <footer className="mt-auto pt-16">
             <span className="flex justify-center p-4 text-sm text-gray-500">
               &copy; 2025 Maycon Marques. All rights reserved.
             </span>
