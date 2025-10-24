@@ -1,0 +1,25 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Product A",
+      "price": 29.99,
+      "description": "A high-quality product A.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 2,
+      "name": "Product B",
+      "price": 49.99,
+      "description": "A premium product B.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 3,
+      "name": "Product C",
+      "price": 19.99,
+      "description": "An affordable product C.",
+      "image": "https://picsum.photos/200"
+    }
+  ]
+}
