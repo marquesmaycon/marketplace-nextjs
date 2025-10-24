@@ -26,15 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}>
         {children}
+        <footer className="mt-auto">
+          <span className="flex justify-center p-4 text-sm text-gray-500">
+            &copy; 2025 Maycon Marques. All rights reserved.
+          </span>
+        </footer>
         <Toaster richColors />
       </body>
-      <footer>
-        <span className="flex justify-center p-4 text-sm text-gray-500">
-          &copy; 2025 Maycon Marques. All rights reserved.
-        </span>
-      </footer>
     </html>
   )
 }

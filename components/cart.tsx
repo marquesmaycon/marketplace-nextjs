@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingCart } from "lucide-react"
+import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingBag, ShoppingCart } from "lucide-react"
 import Image from "next/image"
 
 import { useCart } from "@/contexts/cart-context"
@@ -30,50 +30,63 @@ export function Cart() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 space-y-4">
-        <ScrollArea>
-          {items.map((item) => (
-            <Item key={item.id} variant="muted">
-              <ItemMedia>
-                <Image
-                  src="https://picsum.photos/200"
-                  width={75}
-                  height={75}
-                  alt="product img"
-                  className="rounded-md"
-                />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle className="font-sans">
-                  {item.name} ({item.quantity}x)
-                </ItemTitle>
-                <ItemDescription>{item.description}</ItemDescription>
-              </ItemContent>
-              <ItemActions className="flex-col">
-                <span className="font-mono font-medium">{formatPrice(item.price * item.quantity)}</span>
-                <ButtonGroup aria-label="Item quantity controls" className="h-fit">
-                  <Button variant="outline" size="icon-sm" onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                    <MinusIcon />
-                  </Button>
-                  <Button variant="outline" size="icon-sm" onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                    <PlusIcon />
-                  </Button>
-                </ButtonGroup>
-              </ItemActions>
-            </Item>
-          ))}
-        </ScrollArea>
-
+      <PopoverContent className="w-96 space-y-2">
+        <h2 className="text-center font-semibold">Your Cart</h2>
         {hasItems && (
-          <div className="flex items-center justify-between">
-            <Button variant="secondary" size="sm" onClick={clearCart}>
-              Clear Cart
-            </Button>
+          <>
+            <ScrollArea className="h-96 rounded-lg">
+              <div className="space-y-2">
+                {items.map((item) => (
+                  <Item key={item.id} variant="muted">
+                    <ItemMedia>
+                      <Image
+                        src="https://picsum.photos/200"
+                        width={75}
+                        height={75}
+                        alt="product img"
+                        className="rounded-md"
+                      />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle className="font-sans">
+                        {item.name} ({item.quantity}x)
+                      </ItemTitle>
+                      <ItemDescription>{item.description}</ItemDescription>
+                    </ItemContent>
+                    <ItemActions className="flex-col">
+                      <span className="font-mono font-medium">{formatPrice(item.price * item.quantity)}</span>
+                      <ButtonGroup aria-label="Item quantity controls" className="h-fit">
+                        <Button
+                          variant="outline"
+                          size="icon-sm"
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        >
+                          <MinusIcon />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon-sm"
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        >
+                          <PlusIcon />
+                        </Button>
+                      </ButtonGroup>
+                    </ItemActions>
+                  </Item>
+                ))}
+              </div>
+            </ScrollArea>
 
-            <Badge variant="outline" className="px-3 py-1 font-mono text-base uppercase">
-              Total: <span className="ml-1 font-medium">{formatPrice(totalPrice)}</span>
-            </Badge>
-          </div>
+            <div className="flex items-center justify-between">
+              <Button variant="secondary" size="sm" onClick={clearCart}>
+                Clear Cart
+              </Button>
+
+              <Badge variant="outline" className="px-3 py-1 font-mono text-sm uppercase">
+                Total: <span className="ml-1 font-medium">{formatPrice(totalPrice)}</span>
+              </Badge>
+            </div>
+          </>
         )}
 
         {!hasItems && (
@@ -97,7 +110,7 @@ export function Cart() {
         )}
         <Separator />
         <Button className="w-full" disabled={!hasItems}>
-          Checkout
+          Checkout <ShoppingBag />
         </Button>
       </PopoverContent>
     </Popover>

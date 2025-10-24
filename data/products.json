@@ -20,6 +20,41 @@
       "price": 19.99,
       "description": "An affordable product C.",
       "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 4,
+      "name": "Product D",
+      "price": 99.99,
+      "description": "A luxury product D.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 5,
+      "name": "Product E",
+      "price": 39.99,
+      "description": "A versatile product E.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 6,
+      "name": "Product F",
+      "price": 59.99,
+      "description": "A durable product F.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 7,
+      "name": "Product G",
+      "price": 24.99,
+      "description": "A compact product G.",
+      "image": "https://picsum.photos/200"
+    },
+    {
+      "id": 8,
+      "name": "Product H",
+      "price": 79.99,
+      "description": "A high-performance product H.",
+      "image": "https://picsum.photos/200"
     }
   ]
 }
