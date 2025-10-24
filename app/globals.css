@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -32,7 +32,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
+  --color-primary: var(--delft-blue);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -41,6 +41,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  --color-tiffany-blue: hsla(176, 56%, 68%, 1);
+  --color-sky-magenta: hsla(325, 32%, 63%, 1);
+  --color-delft-blue: hsla(240, 21%, 31%, 1);
+  --color-delft-blue-2: hsla(240, 40%, 31%, 1);
+  --color-rose-quartz: hsla(276, 12%, 69%, 1);
 }
 
 :root {
@@ -76,6 +82,12 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  --tiffany-blue: hsla(176, 56%, 68%, 1);
+  --sky-magenta: hsla(325, 32%, 63%, 1);
+  --delft-blue: hsla(240, 21%, 31%, 1);
+  --delft-blue-2: hsla(240, 40%, 31%, 1);
+  --rose-quartz: hsla(276, 12%, 69%, 1);
 }
 
 .dark {
@@ -139,5 +151,9 @@
 
   small {
     @apply text-sm leading-none font-medium
+  }
+
+  .gradient-primary {
+    @apply bg-linear-to-r from-tiffany-blue via-delft-blue-2 to-sky-magenta
   }
 } 
