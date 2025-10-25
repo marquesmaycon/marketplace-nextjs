@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 import LogoIpsum from "@/public/logoipsum.svg"
 
@@ -6,14 +7,13 @@ import { Cart } from "@/components/cart"
 import { CartProvider } from "@/contexts/cart-context"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { UserMenu } from "@/components/user-menu"
-import Link from "next/link"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>
-      <div className="sticky top-0">
-        <div className="relative z-10 mb-4 rounded-b-md p-1.5 shadow-lg">
-          <div className="from-delft-blue-2/50 via-tiffany-blue/50 to-sky-magenta/50 dark:from-tiffany-blue/50 dark:via-delft-blue/50 dark:to-sky-magenta/50 absolute inset-0 -z-10 bg-linear-to-r [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] backdrop-blur-lg" />
+      <div className="fixed inset-x-0 top-0 z-30">
+        <div className="relative z-10 mb-4 rounded-b-2xl p-1.5 shadow-md">
+          <div className="from-delft-blue-2/50 via-tiffany-blue/50 to-sky-magenta/50 dark:from-tiffany-blue/50 dark:via-delft-blue/50 dark:to-sky-magenta/50 absolute inset-0 -z-10 rounded-b-2xl bg-linear-to-r backdrop-blur-lg" />
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between py-1">
               <Link href="/">
@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-      <main className="container mx-auto px-4">{children}</main>
+      <main className="container mx-auto px-4 pt-20">{children}</main>
     </CartProvider>
   )
 }

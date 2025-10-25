@@ -1,12 +1,17 @@
 "use client"
 
-import { UserPlus } from "lucide-react"
+import { revalidateLogic } from "@tanstack/react-form"
 import z from "zod"
+import { pt } from "zod/locales"
+import { UserPlus } from "lucide-react"
+
+z.config(pt())
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { useAppForm } from "@/hooks/form"
-import { revalidateLogic } from "@tanstack/react-form"
+import { Separator } from "@/components/ui/separator"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const registerSchema = z
   .object({
@@ -19,7 +24,7 @@ const registerSchema = z
     if (data.password !== data.confirmPassword) {
       ctx.addIssue({
         code: "custom",
-        message: "Passwords do not match",
+        message: "As senhas não coincidem",
         path: ["confirmPassword"]
       })
     }
@@ -46,14 +51,17 @@ export default function RegisterPage() {
   })
 
   return (
-    <main className="grid h-screen place-items-center">
+    <main className="relative grid h-screen place-items-center">
+      <div className="absolute top-8 right-8">
+        <ThemeSwitcher />
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="inline-flex items-center gap-2">
             <UserPlus />
-            <h3>Create an Account</h3>
+            <h3 className="font-sans">Crie uma conta</h3>
           </CardTitle>
-          <CardDescription>Please fill in the form below to create an account.</CardDescription>
+          <CardDescription>Por favor, preencha o formulário abaixo para criar uma conta.</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -82,13 +90,14 @@ export default function RegisterPage() {
             </FieldGroup>
           </form>
         </CardContent>
+        <Separator />
         <CardFooter>
           <Field orientation="horizontal">
             <form.AppForm>
               <form.ResetButton variant="secondary" />
             </form.AppForm>
             <form.AppForm>
-              <form.SubmitButton label="Register" form="register-form" />
+              <form.SubmitButton label="Cadastrar" form="register-form" className="flex-1" />
             </form.AppForm>
           </Field>
         </CardFooter>

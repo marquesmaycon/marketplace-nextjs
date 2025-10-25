@@ -1,4 +1,4 @@
-import { LogOut, User } from "lucide-react"
+import { LogOut, Logs, UserRound } from "lucide-react"
 
 import { Button } from "./ui/button"
 import {
@@ -14,13 +14,16 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <User />
+          <UserRound />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Maycon Marques</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-sans">Maycon Marques</DropdownMenuLabel>
         <DropdownMenuItem>
-          <LogOut /> Logout
+          <Logs /> Meus Pedidos
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <LogOut /> Sair
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,14 +1,20 @@
 "use client"
 
-import * as React from "react"
-import { Moon, Sun, SunMoon } from "lucide-react"
 import { useTheme } from "next-themes"
+import clsx from "clsx"
+import { Moon, Sun, SunMoon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
+const themes = [
+  { value: "light", label: "Claro", icon: Sun },
+  { value: "dark", label: "Escuro", icon: Moon },
+  { value: "system", label: "Sistema", icon: SunMoon }
+]
+
 export function ThemeSwitcher() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,15 +25,16 @@ export function ThemeSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          <Sun /> Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          <Moon /> Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          <SunMoon /> System
-        </DropdownMenuItem>
+        {themes.map(({ value, label, icon: Icon }) => (
+          <DropdownMenuItem
+            key={value}
+            onClick={() => setTheme(value)}
+            className={clsx(theme === value && "bg-sky-magenta/10 dark:bg-tiffany-blue/10")}
+          >
+            <Icon />
+            {label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )

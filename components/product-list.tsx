@@ -28,33 +28,37 @@ export function ProductList({ products }: ProductListProps) {
   const { addItem } = useCart()
   return (
     <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {products.map((pd) => (
-        <Item key={pd.name} variant="outline">
-          <ItemHeader>
-            <Image
-              src={pd.image}
-              alt={pd.name}
-              width={200}
-              height={200}
-              className="aspect-square w-full rounded-sm object-cover"
-            />
-          </ItemHeader>
-          <ItemContent>
-            <ItemTitle>
-              <span>{pd.name}</span>
-              <Badge className="bg-sky-magenta">{formatPrice(pd.price)}</Badge>
-            </ItemTitle>
-            <ItemDescription>{pd.description}</ItemDescription>
-          </ItemContent>
-          <ItemFooter>
-            <ItemActions>
-              <Button size="sm" onClick={() => addItem(pd)}>
-                Add to Cart <Plus />
-              </Button>
-            </ItemActions>
-          </ItemFooter>
-        </Item>
-      ))}
+      {products.map((product) => {
+        const { id, name, description, image, price } = product
+        return (
+          <Item key={id} variant="outline" className="bg-sky-magenta/10 dark:bg-tiffany-blue/10 group">
+            <ItemHeader>
+              <Image
+                src={image}
+                alt={name}
+                width={200}
+                height={200}
+                className="aspect-square w-full rounded-sm object-cover transition-transform duration-400 group-hover:scale-105"
+              />
+            </ItemHeader>
+            <ItemContent>
+              <ItemTitle>
+                <span className="font-sans">{name}</span>
+                <Badge className="bg-sky-magenta font-mono">{formatPrice(price)}</Badge>
+              </ItemTitle>
+              <ItemDescription>{description}</ItemDescription>
+            </ItemContent>
+            <ItemFooter>
+              <ItemActions>
+                <Button size="sm" onClick={() => addItem(product)}>
+                  Adicionar ao carrinho
+                  <Plus />
+                </Button>
+              </ItemActions>
+            </ItemFooter>
+          </Item>
+        )
+      })}
     </ItemGroup>
   )
 }

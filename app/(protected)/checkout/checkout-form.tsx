@@ -10,8 +10,12 @@ import { CheckoutDelivery } from "./checkout-delivery"
 import { CreditCardFields } from "./credit-card-fields"
 import { checkOutFormOptions, paymentMethodsMeta } from "./form-options"
 import { CheckoutItems } from "./checkout-items"
+import { formatPrice } from "@/lib/utils"
+import { useCart } from "@/contexts/cart-context"
+import { Badge } from "@/components/ui/badge"
 
 export function CheckoutForm() {
+  const { totalPrice } = useCart()
   const form = useAppForm({
     ...checkOutFormOptions,
     onSubmit: ({ value }) => {
@@ -33,29 +37,31 @@ export function CheckoutForm() {
             <FieldGroup>
               <FieldSet>
                 <FieldLegend>
-                  <h4 className="inline-flex items-center gap-2">
-                    <Contact /> Personal Information
+                  <h4 className="inline-flex items-center gap-2 font-sans">
+                    <Contact /> Informações Pessoais
                   </h4>
                 </FieldLegend>
-                <FieldDescription>Provide your personal details for the order</FieldDescription>
+                <FieldDescription>Forneça seus dados pessoais para o pedido</FieldDescription>
 
                 <FieldGroup>
                   <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="name">
-                      {({ InputField }) => <InputField label="Name" placeholder="Your full name" />}
+                      {({ InputField }) => <InputField label="Nome" placeholder="Seu nome completo" />}
                     </form.AppField>
                     <form.AppField name="cpf">
-                      {({ InputField }) => <InputField label="CPF" placeholder="Your CPF" />}
+                      {({ InputField }) => <InputField label="CPF" placeholder="Seu CPF" />}
                     </form.AppField>
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="phone">
-                      {({ InputField }) => <InputField label="Phone" placeholder="Your phone number" />}
+                      {({ InputField }) => <InputField label="Telefone" placeholder="Seu número de telefone" />}
                     </form.AppField>
 
                     <form.AppField name="email">
-                      {({ InputField }) => <InputField label="Email" placeholder="Your email address" type="email" />}
+                      {({ InputField }) => (
+                        <InputField label="Email" placeholder="Seu endereço de email" type="email" />
+                      )}
                     </form.AppField>
                   </div>
                 </FieldGroup>
@@ -65,30 +71,30 @@ export function CheckoutForm() {
 
               <FieldSet>
                 <FieldLegend>
-                  <h4 className="inline-flex items-center gap-2">
-                    <MapPinHouse /> Address Information
+                  <h4 className="inline-flex items-center gap-2 font-sans">
+                    <MapPinHouse /> Informações de Endereço
                   </h4>
                 </FieldLegend>
-                <FieldDescription>Provide your address details for the order.</FieldDescription>
+                <FieldDescription>Forneça os detalhes do seu endereço para o pedido.</FieldDescription>
                 <FieldGroup>
                   <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="cep">
-                      {({ InputField }) => <InputField label="CEP" placeholder="Your CEP" />}
+                      {({ InputField }) => <InputField label="CEP" placeholder="Seu CEP" />}
                     </form.AppField>
                     <form.AppField name="address">
-                      {({ InputField }) => <InputField label="Address" placeholder="Your address" />}
+                      {({ InputField }) => <InputField label="Endereço" placeholder="Seu endereço" />}
                     </form.AppField>
                   </div>
                   <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="city">
-                      {({ InputField }) => <InputField label="City" placeholder="Your city" />}
+                      {({ InputField }) => <InputField label="Cidade" placeholder="Sua cidade" />}
                     </form.AppField>
                     <form.AppField name="state">
-                      {({ InputField }) => <InputField label="State" placeholder="Your state" />}
+                      {({ InputField }) => <InputField label="Estado" placeholder="Seu estado" />}
                     </form.AppField>
                   </div>
                   <form.AppField name="country">
-                    {({ InputField }) => <InputField label="Country" placeholder="Your country" />}
+                    {({ InputField }) => <InputField label="País" placeholder="Seu país" />}
                   </form.AppField>
                 </FieldGroup>
               </FieldSet>
@@ -97,18 +103,18 @@ export function CheckoutForm() {
 
               <FieldSet>
                 <FieldLegend>
-                  <h4 className="inline-flex items-center gap-2">
-                    <CreditCard /> Payment Information
+                  <h4 className="inline-flex items-center gap-2 font-sans">
+                    <CreditCard /> Informações de Pagamento
                   </h4>
                 </FieldLegend>
-                <FieldDescription>Provide your payment details for the order.</FieldDescription>
+                <FieldDescription>Forneça os detalhes de pagamento para o pedido.</FieldDescription>
                 <FieldGroup>
                   <form.AppField name="paymentMethod">
                     {({ SelectField }) => (
                       <SelectField
-                        label="Payment Method"
+                        label="Método de Pagamento"
                         options={paymentMethodsMeta}
-                        placeholder="Select a payment method"
+                        placeholder="Selecione um método de pagamento"
                       />
                     )}
                   </form.AppField>
@@ -131,14 +137,37 @@ export function CheckoutForm() {
       </Card>
       <Card className="sticky top-18 h-fit md:col-span-2 lg:col-span-1">
         <CardHeader>
-          <CardTitle className="font-sans">Summary</CardTitle>
+          <CardTitle className="font-sans">Resumo</CardTitle>
           <CardDescription>Revise os detalhes do seu pedido antes de finalizar a compra.</CardDescription>
         </CardHeader>
-        <CheckoutItems />
         <CheckoutDelivery form={form} />
+        <CheckoutItems />
+        <CardContent className="space-y-2">
+          <h4 className="font-sans font-semibold">Pagamento</h4>
+          <form.Subscribe selector={({ values }) => [values.paymentMethod, values.installments]}>
+            {([paymentMethod, installments]) => {
+              const paymentMethodLabel = paymentMethodsMeta.find((method) => method.value === paymentMethod)?.label
+              return (
+                <div className="text-foreground/80 space-y-2">
+                  <p className="text-sm">Método: {paymentMethodLabel}</p>
+                  <div className="flex flex-col gap-4">
+                    {paymentMethod === "CREDIT_CARD" && (
+                      <Badge className="w-full font-mono text-sm" variant="secondary">
+                        Parcelas: {installments}x de {formatPrice(totalPrice / +installments)}
+                      </Badge>
+                    )}
+                    <Badge className="bg-sky-magenta w-full px-3 py-1 font-mono text-base">
+                      Valor Total: {formatPrice(totalPrice)}
+                    </Badge>
+                  </div>
+                </div>
+              )
+            }}
+          </form.Subscribe>
+        </CardContent>
         <CardFooter>
           <form.AppForm>
-            <form.SubmitButton label="Finish" className="flex-1" form="checkout-form" />
+            <form.SubmitButton label="Finalizar" className="flex-1" form="checkout-form" />
           </form.AppForm>
         </CardFooter>
       </Card>

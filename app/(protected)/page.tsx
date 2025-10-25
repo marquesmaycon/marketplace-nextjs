@@ -16,8 +16,8 @@ export default async function Home() {
   const { products } = await getProducts()
 
   return (
-    <div className="space-y-4">
-      <h1>Products</h1>
+    <div className="space-y-12 pt-8">
+      <h1 className="font-sans">Nossos Melhores Produtos</h1>
       <ProductList products={products} />
     </div>
   )

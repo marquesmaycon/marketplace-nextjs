@@ -30,6 +30,11 @@ export function Cart() {
     router.push("/checkout")
   }
 
+  const handleStartShopping = () => {
+    setOpen(false)
+    router.push("/")
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -43,7 +48,7 @@ export function Cart() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96 space-y-2">
-        <h3 className="text-center">Your Cart</h3>
+        <h3 className="text-center font-sans">Seu Carrinho</h3>
         {hasItems && (
           <>
             <ScrollArea className="h-96 rounded-lg">
@@ -91,7 +96,7 @@ export function Cart() {
 
             <div className="flex items-center justify-between">
               <Button variant="secondary" size="sm" onClick={clearCart}>
-                Clear Cart
+                Esvaziar Carrinho
               </Button>
 
               <Badge variant="outline" className="px-3 py-1 font-mono text-sm uppercase">
@@ -107,14 +112,12 @@ export function Cart() {
               <EmptyMedia variant="icon">
                 <Handbag />
               </EmptyMedia>
-              <EmptyTitle>Your cart is empty</EmptyTitle>
-              <EmptyDescription>
-                You haven&apos;t added any items to your cart yet. Start shopping to fill your cart.
-              </EmptyDescription>
+              <EmptyTitle>Seu carrinho está vazio</EmptyTitle>
+              <EmptyDescription>Comece a comprar para preencher seu carrinho.</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <Button variant="outline">
-                Products Page
+              <Button variant="ghost" onClick={handleStartShopping}>
+                Página de Produtos
                 <ArrowUpRightIcon />
               </Button>
             </EmptyContent>

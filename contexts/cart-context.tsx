@@ -33,7 +33,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       return [...currentItems, { ...product, quantity: 1 }]
     })
-    toast.success(`${product.name} added to cart`)
+    toast.success(`${product.name} adicionado ao carrinho`)
   }
 
   const removeItem = (productId: number) => {
@@ -43,12 +43,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const updateQuantity = (productId: number, quantity: number) => {
     if (quantity <= 0) {
       removeItem(productId)
-      toast.warning(`Item removed from cart`)
+      toast.warning(`Item removido do carrinho`)
       return
     }
 
     setItems((currentItems) => currentItems.map((item) => (item.id === productId ? { ...item, quantity } : item)))
-    toast.info(`Item quantity updated`)
+    toast.info(`Quantidade do item atualizada`)
   }
 
   const clearCart = () => {

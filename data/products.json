@@ -2,59 +2,59 @@
   "products": [
     {
       "id": 1,
-      "name": "Product A",
+      "name": "Produto A",
       "price": 29.99,
-      "description": "A high-quality product A.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto A de alta qualidade.",
+      "image": "https://picsum.photos/200?random=1"
     },
     {
       "id": 2,
-      "name": "Product B",
+      "name": "Produto B",
       "price": 49.99,
-      "description": "A premium product B.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto B premium.",
+      "image": "https://picsum.photos/200?random=2"
     },
     {
       "id": 3,
-      "name": "Product C",
+      "name": "Produto C",
       "price": 19.99,
-      "description": "An affordable product C.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto C acessível.",
+      "image": "https://picsum.photos/200?random=3"
     },
     {
       "id": 4,
-      "name": "Product D",
+      "name": "Produto D",
       "price": 99.99,
-      "description": "A luxury product D.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto D de luxo.",
+      "image": "https://picsum.photos/200?random=4"
     },
     {
       "id": 5,
-      "name": "Product E",
+      "name": "Produto E",
       "price": 39.99,
-      "description": "A versatile product E.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto E versátil.",
+      "image": "https://picsum.photos/200?random=5"
     },
     {
       "id": 6,
-      "name": "Product F",
+      "name": "Produto F",
       "price": 59.99,
-      "description": "A durable product F.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto F durável.",
+      "image": "https://picsum.photos/200?random=6"
     },
     {
       "id": 7,
-      "name": "Product G",
+      "name": "Produto G",
       "price": 24.99,
-      "description": "A compact product G.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto G compacto.",
+      "image": "https://picsum.photos/200?random=7"
     },
     {
       "id": 8,
-      "name": "Product H",
+      "name": "Produto H",
       "price": 79.99,
-      "description": "A high-performance product H.",
-      "image": "https://picsum.photos/200"
+      "description": "Um produto H de alto desempenho.",
+      "image": "https://picsum.photos/200?random=8"
     }
   ]
 }
