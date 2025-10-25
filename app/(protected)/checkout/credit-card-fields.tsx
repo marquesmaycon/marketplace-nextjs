@@ -1,6 +1,7 @@
 import { withForm } from "@/hooks/form"
 
 import { checkOutFormOptions } from "./form-options"
+import { formatCardExpiry, formatCardNumber, formatCVV } from "@/lib/utils"
 
 export const CreditCardFields = withForm({
   ...checkOutFormOptions,
@@ -9,16 +10,23 @@ export const CreditCardFields = withForm({
       <>
         <form.AppField name="cardNumber">
           {({ InputField }) => (
-            <InputField label="Número do Cartão" placeholder="0000 0000 0000 0000" autoComplete="off" />
+            <InputField
+              label="Número do Cartão"
+              placeholder="0000 0000 0000 0000"
+              autoComplete="off"
+              mask={formatCardNumber}
+            />
           )}
         </form.AppField>
 
         <form.AppField name="cardExpirationDate">
-          {({ InputField }) => <InputField label="Data de Validade" placeholder="MM/AA" autoComplete="off" />}
+          {({ InputField }) => (
+            <InputField label="Data de Validade" placeholder="MM/AA" autoComplete="off" mask={formatCardExpiry} />
+          )}
         </form.AppField>
 
         <form.AppField name="cardCvv">
-          {({ InputField }) => <InputField label="CVV" placeholder="333" autoComplete="off" />}
+          {({ InputField }) => <InputField label="CVV" placeholder="333" autoComplete="off" mask={formatCVV} />}
         </form.AppField>
 
         <form.AppField name="cardHolderName">

@@ -5,10 +5,11 @@ import { Field, FieldError, FieldLabel } from "../ui/field"
 import { Input } from "../ui/input"
 
 type InputFieldProps = ComponentProps<typeof Input> & {
+  mask?: (value: string) => string
   label: string
 }
 
-export default function InputField({ label, ...props }: InputFieldProps) {
+export default function InputField({ label, mask, ...props }: InputFieldProps) {
   const field = useFieldContext<string>()
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
@@ -20,7 +21,7 @@ export default function InputField({ label, ...props }: InputFieldProps) {
         name={field.name}
         value={field.state.value}
         onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={({ target: { value } }) => field.handleChange(mask ? mask(value) : value)}
         aria-invalid={isInvalid}
         {...props}
       />

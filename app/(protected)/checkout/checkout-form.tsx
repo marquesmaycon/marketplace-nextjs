@@ -10,7 +10,7 @@ import { CheckoutDelivery } from "./checkout-delivery"
 import { CreditCardFields } from "./credit-card-fields"
 import { checkOutFormOptions, paymentMethodsMeta } from "./form-options"
 import { CheckoutItems } from "./checkout-items"
-import { formatPrice } from "@/lib/utils"
+import { formatCEP, formatCPF, formatPrice } from "@/lib/utils"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
 
@@ -49,7 +49,7 @@ export function CheckoutForm() {
                       {({ InputField }) => <InputField label="Nome" placeholder="Seu nome completo" />}
                     </form.AppField>
                     <form.AppField name="cpf">
-                      {({ InputField }) => <InputField label="CPF" placeholder="Seu CPF" />}
+                      {({ InputField }) => <InputField label="CPF" placeholder="Seu CPF" mask={formatCPF} />}
                     </form.AppField>
                   </div>
 
@@ -79,7 +79,7 @@ export function CheckoutForm() {
                 <FieldGroup>
                   <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="cep">
-                      {({ InputField }) => <InputField label="CEP" placeholder="Seu CEP" />}
+                      {({ InputField }) => <InputField label="CEP" placeholder="Seu CEP" mask={formatCEP} />}
                     </form.AppField>
                     <form.AppField name="address">
                       {({ InputField }) => <InputField label="Endereço" placeholder="Seu endereço" />}
