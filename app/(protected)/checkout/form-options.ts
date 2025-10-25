@@ -9,7 +9,7 @@ export const paymentMethodsMeta: Array<{ value: (typeof paymentMethods)[number];
   { value: "BOLETO", label: "Boleto" }
 ]
 
-const checkoutSchema = z.object({
+export const checkoutSchema = z.object({
   name: z.string().min(2),
   email: z.email(),
   phone: z.string().min(10),
