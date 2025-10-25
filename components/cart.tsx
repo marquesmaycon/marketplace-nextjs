@@ -1,5 +1,8 @@
 "use client"
 
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+
 import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingBag, ShoppingCart } from "lucide-react"
 import Image from "next/image"
 
@@ -16,12 +19,19 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { Separator } from "./ui/separator"
 
 export function Cart() {
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
   const { items, totalItems, totalPrice, updateQuantity, clearCart } = useCart()
 
   const hasItems = totalItems > 0
 
+  const handleCheckout = () => {
+    setOpen(false)
+    router.push("/checkout")
+  }
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button size="icon" variant="outline" className="relative">
           <ShoppingCart />
@@ -111,7 +121,7 @@ export function Cart() {
           </Empty>
         )}
         <Separator />
-        <Button className="w-full transition-opacity" variant="gradient" disabled={!hasItems}>
+        <Button className="w-full transition-opacity" variant="gradient" disabled={!hasItems} onClick={handleCheckout}>
           Checkout <ShoppingBag />
         </Button>
       </PopoverContent>
