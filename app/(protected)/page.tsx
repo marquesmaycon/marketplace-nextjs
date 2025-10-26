@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className="space-y-12 pt-8">
-      <h1 className="font-sans">Nossos Melhores Produtos</h1>
+      <h1 className="text-delft-blue-2 font-sans">Nossos Melhores Produtos</h1>
       <ProductList products={products} />
     </div>
   )

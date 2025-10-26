@@ -1,5 +1,8 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import Cookies from "js-cookie"
+
+import type { User } from "@/types/user"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -51,4 +54,10 @@ export function formatCEP(value: string) {
   if (match[2]) formatted += "." + match[2]
   if (match[3]) formatted += "-" + match[3]
   return formatted
+}
+
+export function getUserFromCookies() {
+  const userCookie = Cookies.get("user")
+  const user: User | null = userCookie ? JSON.parse(userCookie) : null
+  return user
 }
