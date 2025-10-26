@@ -28,9 +28,8 @@ export function ProductList({ products }: ProductListProps) {
   const { addItem } = useCart()
   return (
     <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {products.map((product) => {
+      {products?.map((product) => {
         const { id, name, description, image, price } = product
-
         return (
           <Item key={id} variant="outline" className="dark:bg-delft-blue/80 group bg-tiffany-blue/10">
             <ItemHeader>

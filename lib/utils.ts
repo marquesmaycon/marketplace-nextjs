@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import Cookies from "js-cookie"
 
 import type { User } from "@/types/user"
+import type { Order } from "@/types/order"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -60,4 +61,21 @@ export function getUserFromCookies() {
   const userCookie = Cookies.get("user")
   const user: User | null = userCookie ? JSON.parse(userCookie) : null
   return user
+}
+
+export function getOrdersFromCookies() {
+  const ordersCookie = Cookies.get("orders")
+  const orders: Order[] = ordersCookie ? JSON.parse(ordersCookie) : []
+  return orders
+}
+
+export function getOrderFromCookies(orderIndex: number) {
+  const orders = getOrdersFromCookies()
+  return orders[orderIndex]
+}
+
+export function editOrderInCookies(orderIndex: number, updatedOrder: Partial<Order>) {
+  const orders = getOrdersFromCookies()
+  const updatedOrders = orders.map((order, index) => (index === orderIndex ? { ...order, ...updatedOrder } : order))
+  Cookies.set("orders", JSON.stringify(updatedOrders), { expires: 7 })
 }

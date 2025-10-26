@@ -1,7 +1,7 @@
 import { ProductList } from "@/components/product-list"
 import type { Product } from "@/types/product"
 
-async function getProducts(): Promise<{ products: Product[] }> {
+async function getProducts(): Promise<Product[]> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   const res = await fetch(`${baseUrl}/api/products`)
 
@@ -13,7 +13,7 @@ async function getProducts(): Promise<{ products: Product[] }> {
 }
 
 export default async function Home() {
-  const { products } = await getProducts()
+  const products = await getProducts()
 
   return (
     <div className="space-y-12 pt-8">
