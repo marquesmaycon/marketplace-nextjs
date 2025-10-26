@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useMutation } from "@tanstack/react-query"
 import Cookies from "js-cookie"
 import { Contact, CreditCard, MapPinHouse } from "lucide-react"
 
@@ -14,9 +15,8 @@ import type { Order } from "@/types/order"
 
 import { CheckoutDelivery } from "./checkout-delivery"
 import { CreditCardFields } from "./credit-card-fields"
-import { checkOutFormOptions, paymentMethodsMeta } from "./form-options"
+import { checkOutFormOptions, expirations, paymentMethodsOptions, type PaymentMethod } from "./form-options"
 import { CheckoutItems } from "./checkout-items"
-import { useMutation } from "@tanstack/react-query"
 
 export function CheckoutForm() {
   const router = useRouter()
@@ -31,6 +31,7 @@ export function CheckoutForm() {
       email: user?.email || ""
     },
     onSubmit: async ({ value }) => {
+      const expiresAt = expirations[value.paymentMethod as PaymentMethod]
       const order: Order = {
         products: items.map((item) => ({ id: item.id, quantity: item.quantity })),
         totalAmount: totalPrice,
@@ -38,7 +39,7 @@ export function CheckoutForm() {
         paymentMethod: value.paymentMethod as Order["paymentMethod"],
         status: "pending",
         orderDate: new Date().toISOString(),
-        expiresAt: new Date(new Date().getTime() + 30 * 60 * 1000).toISOString()
+        expiresAt
       }
       await mutateAsync({ order })
     }
@@ -149,7 +150,7 @@ export function CheckoutForm() {
                     {({ SelectField }) => (
                       <SelectField
                         label="Método de Pagamento"
-                        options={paymentMethodsMeta}
+                        options={paymentMethodsOptions}
                         placeholder="Selecione um método de pagamento"
                       />
                     )}
@@ -182,7 +183,7 @@ export function CheckoutForm() {
           <h4 className="font-sans font-semibold">Pagamento</h4>
           <form.Subscribe selector={({ values }) => [values.paymentMethod, values.installments]}>
             {([paymentMethod, installments]) => {
-              const paymentMethodLabel = paymentMethodsMeta.find((method) => method.value === paymentMethod)?.label
+              const paymentMethodLabel = paymentMethodsOptions.find((method) => method.value === paymentMethod)?.label
               return (
                 <div className="text-foreground/80 space-y-2">
                   <p className="text-sm">Método: {paymentMethodLabel}</p>

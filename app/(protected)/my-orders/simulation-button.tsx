@@ -4,32 +4,42 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { Order } from "@/types/order"
 
+import { statusMap } from "./order"
+import type { EditOrderProps } from "./page"
+
+const simulationOptions: { label: string; status: Order["status"] }[] = [
+  { label: "Pagamento pendente", status: "pending" },
+  { label: "Pagamento bem sucedido", status: "payed" },
+  { label: "Pagamento expirado", status: "expired" },
+  { label: "Falha no pagamento", status: "failed" },
+  { label: "Pedido cancelado", status: "canceled" }
+]
+
 type SimulationButtonProps = {
   orderIndex: number
-  onEditOrder: ({ index, updates }: { index: number; updates: Partial<Order> }) => void
+  onEditOrder: (props: EditOrderProps) => void
 }
 
 export function SimulationButton({ orderIndex, onEditOrder }: SimulationButtonProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="mt-8">
+      <DropdownMenuTrigger asChild>
         <Button variant="secondary" size="sm" className="">
           Simular <Ellipsis />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => onEditOrder({ index: orderIndex, updates: { status: "pending" } })}>
-          Pagamento pendente
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onEditOrder({ index: orderIndex, updates: { status: "payed" } })}>
-          Pagamento bem sucedido
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onEditOrder({ index: orderIndex, updates: { status: "expired" } })}>
-          Pagamento expirado
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onEditOrder({ index: orderIndex, updates: { status: "failed" } })}>
-          Falha no pagamento
-        </DropdownMenuItem>
+        {simulationOptions.map((option) => {
+          const status = statusMap[option.status]
+          return (
+            <DropdownMenuItem
+              key={option.status}
+              onClick={() => onEditOrder({ index: orderIndex, updates: { status: option.status } })}
+            >
+              {status.icon} {option.label}
+            </DropdownMenuItem>
+          )
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,39 +1,45 @@
 import { useState } from "react"
 import Image from "next/image"
-
-import { AlertCircle, ChevronDown, Ellipsis, ShieldAlertIcon, Truck, XCircle } from "lucide-react"
-
 import { useQuery } from "@tanstack/react-query"
+import { AlertCircle, ChevronDown, Ellipsis, TriangleAlert, Truck, XCircle } from "lucide-react"
+
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
 import type { Order } from "@/types/order"
-
-import { PixPayment } from "./pix-payment"
-import { SimulationButton } from "./simulation-button"
 import type { Product } from "@/types/product"
 
-const statusMap: Record<Order["status"], { label: string; icon: React.ReactNode }> = {
+import { SimulationButton } from "./simulation-button"
+import type { EditOrderProps } from "./page"
+import { PaymentStatus } from "./payment-status"
+
+export const statusMap: Record<Order["status"], { label: string; className: string; icon: React.ReactNode }> = {
   pending: {
     label: "Pendente",
-    icon: <Ellipsis className="text-yellow-400" />
+    className: "bg-delft-blue-2",
+    icon: <Ellipsis className="text-delft-blue-2" />
   },
   payed: {
     label: "Pago",
+    className: "bg-tiffany-blue",
     icon: <Truck className="text-tiffany-blue" />
-  },
-  failed: {
-    label: "Falhou",
-    icon: <ShieldAlertIcon className="text-yellow-500" />
   },
   expired: {
     label: "Expirado",
-    icon: <AlertCircle className="text-orange-500" />
+    className: "bg-yellow-500",
+    icon: <AlertCircle className="text-yellow-500" />
+  },
+  failed: {
+    label: "Falhou",
+    className: "bg-orange-500",
+    icon: <TriangleAlert className="text-orange-500" />
   },
   canceled: {
     label: "Cancelado",
+    className: "bg-red-500",
     icon: <XCircle className="text-red-500" />
   }
 }
@@ -41,10 +47,10 @@ const statusMap: Record<Order["status"], { label: string; icon: React.ReactNode 
 type OrderProps = Order & {
   orderIndex: number
   isUpdating: boolean
-  editOrder: ({ index, updates }: { index: number; updates: Partial<Order> }) => void
+  editOrder: (props: EditOrderProps) => void
 }
 
-export function Order({ orderIndex, products, orderDate, status, editOrder, isUpdating }: OrderProps) {
+export function Order({ orderIndex, products, orderDate, status, editOrder, isUpdating, paymentMethod }: OrderProps) {
   const [open, setOpen] = useState(false)
 
   const { data: productsList, isLoading } = useQuery<Product[]>({
@@ -56,8 +62,6 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
     enabled: !!open
   })
 
-  console.log(productsList)
-
   const statusInfo = statusMap[status]
 
   return (
@@ -68,9 +72,11 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
           <ItemContent>
             <ItemTitle className="flex flex-wrap font-sans">
               <span>Pedido #{orderIndex + 1}</span>
-              <span>Status: {statusInfo.label}</span>
+              <Badge className={statusInfo.className}>{statusInfo.label}</Badge>
             </ItemTitle>
-            <ItemDescription>Data: {new Date(orderDate).toLocaleDateString()}</ItemDescription>
+            <ItemDescription>
+              Data: {new Date(orderDate).toLocaleDateString()} - {paymentMethod}
+            </ItemDescription>
           </ItemContent>
           <ItemActions>
             <CollapsibleTrigger asChild>
@@ -81,14 +87,16 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
           </ItemActions>
         </div>
         <CollapsibleContent className="w-full space-y-4">
-          <Separator className="mb-6" />
+          <Separator />
 
-          <div>
-            <h4 className="mb-4 font-semibold">Itens do pedido:</h4>
-            {isLoading && <Spinner />}
+          <PaymentStatus orderIndex={orderIndex} editOrder={editOrder} />
 
-            {!isLoading && productsList?.length === 0 && <p>Nenhum produto encontrado.</p>}
+          <Separator />
 
+          <h4 className="font-semibold">Itens do pedido:</h4>
+          {isLoading && <Spinner />}
+
+          <ItemGroup className="grid gap-4 md:grid-cols-2">
             {productsList?.map((product) => {
               const quantity = products.find((p) => p.id === product.id)?.quantity || 0
               return (
@@ -105,11 +113,9 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
                 </Item>
               )
             })}
-          </div>
+          </ItemGroup>
 
-          <Separator className="mb-6" />
-
-          {true && <PixPayment orderIndex={orderIndex} editOrder={editOrder} />}
+          <Separator />
 
           <SimulationButton orderIndex={orderIndex} onEditOrder={editOrder} />
         </CollapsibleContent>

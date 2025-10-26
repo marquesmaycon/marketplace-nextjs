@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { Ban, CheckCircle, CircleAlert } from "lucide-react"
+import { Ban, CheckCircle, TriangleAlert } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -22,7 +22,7 @@ export function AlertPaymentError({
 }: AlertPaymentErrorProps) {
   return (
     <Alert {...props}>
-      <CircleAlert />
+      <TriangleAlert />
       <AlertTitle>{title}</AlertTitle>
       <AlertDescription>
         {description}

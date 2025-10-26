@@ -1,18 +1,20 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { ArrowUpRightIcon, List } from "lucide-react"
 
 import { ItemGroup } from "@/components/ui/item"
 import { editOrderInCookies, getOrdersFromCookies } from "@/lib/utils"
 import type { Order as OrderType } from "@/types/order"
-
-import { Order } from "./order"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
-import { ArrowUpRightIcon, List } from "lucide-react"
-import Link from "next/link"
+
+import { Order } from "./order"
+
+export type EditOrderProps = { index: number; updates: Partial<OrderType> }
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState(getOrdersFromCookies())
@@ -22,8 +24,7 @@ export default function MyOrdersPage() {
     isPending,
     variables
   } = useMutation({
-    mutationKey: ["editOrder"],
-    mutationFn: async ({ index, updates }: { index: number; updates: Partial<OrderType> }) => {
+    mutationFn: async ({ index, updates }: EditOrderProps) => {
       await new Promise((res) => setTimeout(res, 1000))
       editOrderInCookies(index, updates)
       setOrders(getOrdersFromCookies())
