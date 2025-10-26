@@ -1,7 +1,8 @@
 "use client"
 
-import Cookies from "js-cookie"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 import { LogOut, Logs, UserRound } from "lucide-react"
 
 import { getUserFromCookies } from "@/lib/utils"
@@ -23,6 +24,7 @@ export function UserMenu() {
 
   const handleLogout = () => {
     Cookies.remove("user")
+    Cookies.remove("orders")
     router.push("/register")
   }
 
@@ -35,8 +37,10 @@ export function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="font-sans">{user?.name.split(" ").splice(0, 2).join(" ")}</DropdownMenuLabel>
-        <DropdownMenuItem>
-          <Logs /> Meus Pedidos
+        <DropdownMenuItem asChild>
+          <Link href="/my-orders">
+            <Logs /> Meus Pedidos
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>

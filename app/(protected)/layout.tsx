@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between py-1">
               <Link href="/">
-                <Image src={LogoIpsum} alt="Logo Ipsum" width={80} height={50} />
+                <Image src={LogoIpsum} alt="Logo Ipsum" width={80} height={50} className="h-auto" />
               </Link>
               <div className="flex items-center gap-2">
                 <Cart />

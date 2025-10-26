@@ -1,25 +1,62 @@
 "use client"
 
+import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 import { Contact, CreditCard, MapPinHouse } from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@/components/ui/field"
 import { useAppForm } from "@/hooks/form"
+import { formatCEP, formatCPF, formatPrice, getOrdersFromCookies, getUserFromCookies } from "@/lib/utils"
+import { useCart } from "@/contexts/cart-context"
+import { Badge } from "@/components/ui/badge"
+import type { Order } from "@/types/order"
 
 import { CheckoutDelivery } from "./checkout-delivery"
 import { CreditCardFields } from "./credit-card-fields"
 import { checkOutFormOptions, paymentMethodsMeta } from "./form-options"
 import { CheckoutItems } from "./checkout-items"
-import { formatCEP, formatCPF, formatPrice } from "@/lib/utils"
-import { useCart } from "@/contexts/cart-context"
-import { Badge } from "@/components/ui/badge"
+import { useMutation } from "@tanstack/react-query"
 
 export function CheckoutForm() {
-  const { totalPrice } = useCart()
+  const router = useRouter()
+  const { totalPrice, items, clearCart } = useCart()
+  const user = getUserFromCookies()
+
   const form = useAppForm({
     ...checkOutFormOptions,
-    onSubmit: ({ value }) => {
-      console.log("Checkout form submitted:", value)
+    defaultValues: {
+      ...checkOutFormOptions.defaultValues,
+      name: user?.name || "",
+      email: user?.email || ""
+    },
+    onSubmit: async ({ value }) => {
+      const order: Order = {
+        products: items.map((item) => ({ id: item.id, quantity: item.quantity })),
+        totalAmount: totalPrice,
+        address: `${value.address}, ${value.city} - ${value.state}, ${value.country}, CEP: ${value.cep}`,
+        paymentMethod: value.paymentMethod as Order["paymentMethod"],
+        status: "pending",
+        orderDate: new Date().toISOString(),
+        expiresAt: new Date(new Date().getTime() + 30 * 60 * 1000).toISOString()
+      }
+      await mutateAsync({ order })
+    }
+  })
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async ({ order }: { order: Order }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      const orders = getOrdersFromCookies()
+      orders.push(order)
+
+      Cookies.set("orders", JSON.stringify(orders), { expires: 7 })
+    },
+    onSuccess: () => {
+      clearCart()
+      form.reset()
+      router.push("/my-orders")
     }
   })
 
@@ -51,9 +88,7 @@ export function CheckoutForm() {
                     <form.AppField name="cpf">
                       {({ InputField }) => <InputField label="CPF" placeholder="Seu CPF" mask={formatCPF} />}
                     </form.AppField>
-                  </div>
 
-                  <div className="grid gap-4 md:grid-cols-2">
                     <form.AppField name="phone">
                       {({ InputField }) => <InputField label="Telefone" placeholder="Seu número de telefone" />}
                     </form.AppField>
@@ -84,18 +119,19 @@ export function CheckoutForm() {
                     <form.AppField name="address">
                       {({ InputField }) => <InputField label="Endereço" placeholder="Seu endereço" />}
                     </form.AppField>
-                  </div>
-                  <div className="grid gap-4 md:grid-cols-2">
+                    <form.AppField name="neighborhood">
+                      {({ InputField }) => <InputField label="Bairro" placeholder="Seu bairro" />}
+                    </form.AppField>
                     <form.AppField name="city">
                       {({ InputField }) => <InputField label="Cidade" placeholder="Sua cidade" />}
                     </form.AppField>
                     <form.AppField name="state">
                       {({ InputField }) => <InputField label="Estado" placeholder="Seu estado" />}
                     </form.AppField>
+                    <form.AppField name="country">
+                      {({ InputField }) => <InputField label="País" placeholder="Seu país" />}
+                    </form.AppField>
                   </div>
-                  <form.AppField name="country">
-                    {({ InputField }) => <InputField label="País" placeholder="Seu país" />}
-                  </form.AppField>
                 </FieldGroup>
               </FieldSet>
 
@@ -167,7 +203,7 @@ export function CheckoutForm() {
         </CardContent>
         <CardFooter>
           <form.AppForm>
-            <form.SubmitButton label="Finalizar" className="flex-1" form="checkout-form" />
+            <form.SubmitButton label="Finalizar" className="flex-1" form="checkout-form" loading={isPending} />
           </form.AppForm>
         </CardFooter>
       </Card>

@@ -4,9 +4,10 @@ import { pt } from "zod/locales"
 
 z.config(pt())
 
-const paymentMethods = ["PIX", "CREDIT_CARD", "BOLETO"] as const
+const paymentMethods = z.enum(["PIX", "CREDIT_CARD", "BOLETO"])
+export type PaymentMethod = z.infer<typeof paymentMethods>
 
-export const paymentMethodsMeta: Array<{ value: (typeof paymentMethods)[number]; label: string }> = [
+export const paymentMethodsMeta: Array<{ value: PaymentMethod; label: string }> = [
   { value: "PIX", label: "PIX" },
   { value: "CREDIT_CARD", label: "Cartão de Crédito" },
   { value: "BOLETO", label: "Boleto" }
@@ -33,7 +34,7 @@ export const checkoutSchema = z
     city: z.string().min(2),
     state: z.string().min(2),
     country: z.string().min(2),
-    paymentMethod: z.enum(paymentMethods),
+    paymentMethod: paymentMethods,
     cardNumber: z.string(),
     cardHolderName: z.string(),
     cardExpirationDate: z.string(),
