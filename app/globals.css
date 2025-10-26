@@ -129,10 +129,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50
+    
+  }
+
+  html {
+    scrollbar-gutter: stable both-edges;
   }
 
   body {
-    @apply bg-background text-foreground
+    @apply bg-white dark:bg-delft-blue-2/20 text-foreground
   }
 
   h1 {
@@ -158,4 +163,9 @@
   .gradient-primary {
     @apply bg-linear-to-r from-tiffany-blue via-delft-blue-2 to-sky-magenta
   }
-} 
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}

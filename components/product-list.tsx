@@ -5,8 +5,8 @@ import Image from "next/image"
 
 import { useCart } from "@/contexts/cart-context"
 import type { Product } from "@/types/product"
-
 import { formatPrice } from "@/lib/utils"
+
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import {
@@ -30,16 +30,19 @@ export function ProductList({ products }: ProductListProps) {
     <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => {
         const { id, name, description, image, price } = product
+
         return (
-          <Item key={id} variant="outline" className="bg-sky-magenta/10 dark:bg-tiffany-blue/10 group">
+          <Item key={id} variant="outline" className="dark:bg-delft-blue/80 group bg-tiffany-blue/10">
             <ItemHeader>
-              <Image
-                src={image}
-                alt={name}
-                width={200}
-                height={200}
-                className="aspect-square w-full rounded-sm object-cover transition-transform duration-400 group-hover:scale-105"
-              />
+              <div className="w-auto overflow-hidden rounded-sm">
+                <Image
+                  src={image}
+                  alt={name}
+                  width={400}
+                  height={400}
+                  className="aspect-square rounded-sm object-cover transition-transform duration-400 group-hover:scale-105"
+                />
+              </div>
             </ItemHeader>
             <ItemContent>
               <ItemTitle>
