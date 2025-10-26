@@ -132,10 +132,6 @@
     
   }
 
-  html {
-    scrollbar-gutter: stable both-edges;
-  }
-
   body {
     @apply bg-white dark:bg-delft-blue-2/20 text-foreground
   }

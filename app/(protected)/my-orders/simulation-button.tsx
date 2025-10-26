@@ -6,6 +6,7 @@ import type { Order } from "@/types/order"
 
 import { statusMap } from "./order"
 import type { EditOrderProps } from "./page"
+import { expirations } from "../checkout/form-options"
 
 const simulationOptions: { label: string; status: Order["status"] }[] = [
   { label: "Pagamento pendente", status: "pending" },
@@ -17,10 +18,11 @@ const simulationOptions: { label: string; status: Order["status"] }[] = [
 
 type SimulationButtonProps = {
   orderIndex: number
+  paymentMethod: Order["paymentMethod"]
   onEditOrder: (props: EditOrderProps) => void
 }
 
-export function SimulationButton({ orderIndex, onEditOrder }: SimulationButtonProps) {
+export function SimulationButton({ orderIndex, paymentMethod, onEditOrder }: SimulationButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,10 +33,11 @@ export function SimulationButton({ orderIndex, onEditOrder }: SimulationButtonPr
       <DropdownMenuContent>
         {simulationOptions.map((option) => {
           const status = statusMap[option.status]
+          const expiresAt = expirations[paymentMethod]
           return (
             <DropdownMenuItem
               key={option.status}
-              onClick={() => onEditOrder({ index: orderIndex, updates: { status: option.status } })}
+              onClick={() => onEditOrder({ index: orderIndex, updates: { status: option.status, expiresAt } })}
             >
               {status.icon} {option.label}
             </DropdownMenuItem>

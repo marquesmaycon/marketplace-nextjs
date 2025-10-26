@@ -27,7 +27,7 @@ export function AlertPaymentError({
       <AlertDescription>
         {description}
         <div className="mt-2 flex flex-wrap gap-4">
-          <Button variant="outline" size="sm" onClick={onGenerate}>
+          <Button variant="secondary" size="sm" onClick={onGenerate}>
             {generateDescription}
           </Button>
           <Button variant="destructive" size="sm" onClick={onCancel}>

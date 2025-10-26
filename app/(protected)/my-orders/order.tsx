@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
-import { AlertCircle, ChevronDown, Ellipsis, TriangleAlert, Truck, XCircle } from "lucide-react"
+import { AlertCircle, ChevronDown, Loader, TriangleAlert, Truck, XCircle } from "lucide-react"
 
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -19,8 +19,8 @@ import { PaymentStatus } from "./payment-status"
 export const statusMap: Record<Order["status"], { label: string; className: string; icon: React.ReactNode }> = {
   pending: {
     label: "Pendente",
-    className: "bg-delft-blue-2",
-    icon: <Ellipsis className="text-delft-blue-2" />
+    className: "bg-delft-blue-2 dark:bg-indigo-600",
+    icon: <Loader className="text-delft-blue-2 dark:text-indigo-600" />
   },
   payed: {
     label: "Pago",
@@ -100,7 +100,7 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
             {productsList?.map((product) => {
               const quantity = products.find((p) => p.id === product.id)?.quantity || 0
               return (
-                <Item key={product.id} className="bg-rose-quartz/20">
+                <Item key={product.id} className="bg-rose-quartz/20 dark:bg-tiffany-blue/15">
                   <ItemMedia>
                     <Image src={product.image} width={75} height={75} alt="product img" className="rounded-md" />
                   </ItemMedia>
@@ -117,7 +117,7 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
 
           <Separator />
 
-          <SimulationButton orderIndex={orderIndex} onEditOrder={editOrder} />
+          <SimulationButton orderIndex={orderIndex} paymentMethod={paymentMethod} onEditOrder={editOrder} />
         </CollapsibleContent>
       </Item>
     </Collapsible>

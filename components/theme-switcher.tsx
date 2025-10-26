@@ -15,6 +15,7 @@ const themes = [
 
 export function ThemeSwitcher() {
   const { setTheme, theme } = useTheme()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

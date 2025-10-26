@@ -1,13 +1,15 @@
-import { Check, Copy } from "lucide-react"
+import { Check, Copy, Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
-import { editOrderInCookies, getOrderFromCookies } from "@/lib/utils"
+import { getOrderFromCookies } from "@/lib/utils"
 import type { Order } from "@/types/order"
+import { Button } from "@/components/ui/button"
 
 import { AlertCanceled, AlertPayed, AlertPaymentError } from "./alerts"
 import type { EditOrderProps } from "./page"
 import { expirations } from "../checkout/form-options"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export const paymentMethodMap: Record<
   Order["paymentMethod"],
@@ -18,11 +20,11 @@ export const paymentMethodMap: Record<
     pendingTitle?: string
     pendingDescription?: string
     copyText?: string
-    component: (props: Order & PaymentStatusProps) => React.ReactNode
+    component: (props: DebitPendingProps) => React.ReactNode
   }
 > = {
   BOLETO: {
-    expiredDescription: "O seu boleto expirou",
+    expiredDescription: "Você não pagou o boleto a tempo",
     generateDescription: "Gerar novo boleto",
     expirationTime: expirations.BOLETO,
     pendingTitle: "Aguardando pagamento",
@@ -31,7 +33,7 @@ export const paymentMethodMap: Record<
     component: DebitPending
   },
   PIX: {
-    expiredDescription: "O seu pagamento expirou",
+    expiredDescription: "Você não pagou o PIX a tempo",
     generateDescription: "Gerar nova chave PIX",
     expirationTime: expirations.PIX,
     pendingTitle: "Aguardando pagamento",
@@ -49,7 +51,7 @@ export const paymentMethodMap: Record<
 
 type PaymentStatusProps = {
   orderIndex: number
-  editOrder?: (props: EditOrderProps) => void
+  editOrder: (props: EditOrderProps) => void
 }
 
 export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
@@ -60,21 +62,28 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
 
   return (
     <div className="space-y-6">
-      {order.status === "pending" && <PendingComponent orderIndex={orderIndex} {...order} />}
+      {order.status === "pending" && (
+        <PendingComponent
+          orderIndex={orderIndex}
+          onExpired={() => editOrder({ index: orderIndex, updates: { status: "expired" } })}
+          onCancel={() => editOrder({ index: orderIndex, updates: { status: "canceled" } })}
+          {...order}
+        />
+      )}
 
       {order.status === "expired" && (
         <AlertPaymentError
           className="text-yellow-500"
           title="O seu pagamento expirou"
-          description={paymentMeta.expiredDescription || "Você pode gerar um novo pagamento"}
+          description="Você não realizou o pagamento a tempo"
           generateDescription={paymentMeta.generateDescription || "Gerar novo pagamento"}
           onGenerate={() =>
-            editOrder?.({
+            editOrder({
               index: orderIndex,
               updates: { status: "pending", expiresAt: paymentMeta.expirationTime }
             })
           }
-          onCancel={() => editOrder?.({ index: orderIndex, updates: { status: "canceled" } })}
+          onCancel={() => editOrder({ index: orderIndex, updates: { status: "canceled" } })}
         />
       )}
 
@@ -82,15 +91,15 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
         <AlertPaymentError
           className="text-orange-500"
           title="O seu pagamento falhou"
-          description={paymentMeta.expiredDescription || "Você pode gerar um novo pagamento"}
+          description="Houve um problema ao processar o seu pagamento. Você pode tentar novamente."
           generateDescription={paymentMeta.generateDescription || "Gerar novo pagamento"}
           onGenerate={() =>
-            editOrder?.({
+            editOrder({
               index: orderIndex,
               updates: { status: "pending", expiresAt: paymentMeta.expirationTime }
             })
           }
-          onCancel={() => editOrder?.({ index: orderIndex, updates: { status: "canceled" } })}
+          onCancel={() => editOrder({ index: orderIndex, updates: { status: "canceled" } })}
         />
       )}
 
@@ -101,16 +110,22 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
   )
 }
 
-function DebitPending({ status, expiresAt, orderIndex, paymentMethod }: Order & PaymentStatusProps) {
+type DebitPendingProps = Order & {
+  orderIndex: number
+  onExpired: () => void
+  onCancel: () => void
+}
+
+function DebitPending({ orderIndex, status, expiresAt, paymentMethod, onExpired, onCancel }: DebitPendingProps) {
   const [isCopied, setIsCopied] = useState(false)
 
   const isExpired = new Date(expiresAt) < new Date()
 
   useEffect(() => {
     if (isExpired && status === "pending") {
-      editOrderInCookies(orderIndex, { status: "expired" })
+      onExpired()
     }
-  }, [isExpired, status, orderIndex])
+  }, [isExpired, status, orderIndex, onExpired])
 
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(() => {
@@ -143,10 +158,22 @@ function DebitPending({ status, expiresAt, orderIndex, paymentMethod }: Order & 
           </InputGroupButton>
         </InputGroupAddon>
       </InputGroup>
+
+      <Button variant="outline" size="sm" className="text-red-500" onClick={() => onCancel()}>
+        Cancelar pedido
+      </Button>
     </div>
   )
 }
 
 function CreditCardPending() {
-  return <div>Credit Card Payment Pending...</div>
+  return (
+    <Alert className="text-indigo-500">
+      <Loader />
+      <AlertTitle>Pagamento em andamento...</AlertTitle>
+      <AlertDescription>
+        Seu pagamento com cartão de crédito está sendo processado. Pode levar alguns minutos até sua operadora aprovar
+      </AlertDescription>
+    </Alert>
+  )
 }

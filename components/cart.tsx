@@ -47,7 +47,7 @@ export function Cart() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 space-y-2">
+      <PopoverContent className="w-96 space-y-2" align="end" alignOffset={-100}>
         <h3 className="text-center font-sans">Seu Carrinho</h3>
         {hasItems && (
           <>

@@ -38,7 +38,7 @@ export default function MyOrdersPage() {
     <div className="space-y-4">
       <h2 className="font-sans">Meus Pedidos</h2>
       <ItemGroup className="gap-8">
-        {orders.map((order, index) => {
+        {orders.reverse().map((order, index) => {
           const isUpdating = isPending && variables?.index === index
           return (
             <Order

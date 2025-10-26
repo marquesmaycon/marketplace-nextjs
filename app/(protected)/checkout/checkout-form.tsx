@@ -1,7 +1,9 @@
 "use client"
 
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { Contact, CreditCard, MapPinHouse } from "lucide-react"
 
@@ -22,6 +24,12 @@ export function CheckoutForm() {
   const router = useRouter()
   const { totalPrice, items, clearCart } = useCart()
   const user = getUserFromCookies()
+
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push("/")
+    }
+  }, [items, router])
 
   const form = useAppForm({
     ...checkOutFormOptions,
@@ -58,6 +66,7 @@ export function CheckoutForm() {
       clearCart()
       form.reset()
       router.push("/my-orders")
+      toast.success("Pedido criado com sucesso!")
     }
   })
 
