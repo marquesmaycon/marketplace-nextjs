@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner"
 
 import "./globals.css"
-import { ThemeProvider } from "@/providers/theme-provider"
+import Providers from "./providers"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <footer className="mt-auto pt-16">
-            <span className="flex justify-center p-4 text-sm text-gray-500">
-              &copy; 2025 Maycon Marques. All rights reserved.
-            </span>
-          </footer>
-          <Toaster richColors />
-        </ThemeProvider>
+        <Providers>{children}</Providers>
+        <footer className="mt-auto pt-16">
+          <span className="flex justify-center p-4 text-sm text-gray-500">
+            &copy; 2025 Maycon Marques. All rights reserved.
+          </span>
+        </footer>
+        <Toaster richColors />
       </body>
     </html>
   )
