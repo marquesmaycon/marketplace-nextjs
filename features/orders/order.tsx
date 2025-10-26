@@ -1,6 +1,5 @@
 import { useState } from "react"
 import Image from "next/image"
-import { useQuery } from "@tanstack/react-query"
 import { AlertCircle, ChevronDown, Loader, TriangleAlert, Truck, XCircle } from "lucide-react"
 
 import { Spinner } from "@/components/ui/spinner"
@@ -10,11 +9,11 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, 
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import type { Order } from "@/types/order"
-import type { Product } from "@/types/product"
 
 import { SimulationButton } from "./simulation-button"
-import type { EditOrderProps } from "./page"
 import { PaymentStatus } from "./payment-status"
+import type { EditOrderProps } from "./hooks"
+import { useGetProductsById } from "../products/hook"
 
 export const statusMap: Record<Order["status"], { label: string; className: string; icon: React.ReactNode }> = {
   pending: {
@@ -53,14 +52,10 @@ type OrderProps = Order & {
 export function Order({ orderIndex, products, orderDate, status, editOrder, isUpdating, paymentMethod }: OrderProps) {
   const [open, setOpen] = useState(false)
 
-  const { data: productsList, isLoading } = useQuery<Product[]>({
-    queryKey: ["products", products.map((p) => p.id)],
-    queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/api/products?ids=${products.map((p) => p.id).join(",")}`)
-      return res.json()
-    },
-    enabled: !!open
-  })
+  const { data: productsList, isLoading } = useGetProductsById(
+    products.map(({ id }) => id),
+    open
+  )
 
   const statusInfo = statusMap[status]
 

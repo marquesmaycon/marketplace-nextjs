@@ -2,15 +2,13 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
-import Cookies from "js-cookie"
 import { Contact, CreditCard, MapPinHouse } from "lucide-react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@/components/ui/field"
 import { useAppForm } from "@/hooks/form"
-import { formatCEP, formatCPF, formatPrice, getOrdersFromCookies, getUserFromCookies } from "@/lib/utils"
+import { formatCEP, formatCPF, formatPrice, getUserFromCookies } from "@/lib/utils"
 import { useCart } from "@/contexts/cart-context"
 import { Badge } from "@/components/ui/badge"
 import type { Order } from "@/types/order"
@@ -19,6 +17,7 @@ import { CheckoutDelivery } from "./checkout-delivery"
 import { CreditCardFields } from "./credit-card-fields"
 import { checkOutFormOptions, expirations, paymentMethodsOptions, type PaymentMethod } from "./form-options"
 import { CheckoutItems } from "./checkout-items"
+import { useCreateOrder } from "./hooks"
 
 export function CheckoutForm() {
   const router = useRouter()
@@ -49,26 +48,21 @@ export function CheckoutForm() {
         orderDate: new Date().toISOString(),
         expiresAt
       }
-      await mutateAsync({ order })
+      await mutateAsync(
+        { order },
+        {
+          onSuccess: () => {
+            clearCart()
+            form.reset()
+            router.push("/my-orders")
+            toast.success("Pedido criado com sucesso!")
+          }
+        }
+      )
     }
   })
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ order }: { order: Order }) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      const orders = getOrdersFromCookies()
-      orders.push(order)
-
-      Cookies.set("orders", JSON.stringify(orders), { expires: 7 })
-    },
-    onSuccess: () => {
-      clearCart()
-      form.reset()
-      router.push("/my-orders")
-      toast.success("Pedido criado com sucesso!")
-    }
-  })
+  const { mutateAsync, isPending } = useCreateOrder()
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5 lg:grid-cols-3">

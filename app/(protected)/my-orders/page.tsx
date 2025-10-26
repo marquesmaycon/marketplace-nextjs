@@ -1,44 +1,25 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
 import { ArrowUpRightIcon, List } from "lucide-react"
 
 import { ItemGroup } from "@/components/ui/item"
-import { editOrderInCookies, getOrdersFromCookies } from "@/lib/utils"
-import type { Order as OrderType } from "@/types/order"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
 
-import { Order } from "./order"
-
-export type EditOrderProps = { index: number; updates: Partial<OrderType> }
+import { useEditOrder, useGetOrders } from "@/features/orders/hooks"
+import { Order } from "@/features/orders/order"
 
 export default function MyOrdersPage() {
-  const [orders, setOrders] = useState(getOrdersFromCookies())
-
-  const {
-    mutateAsync: editOrder,
-    isPending,
-    variables
-  } = useMutation({
-    mutationFn: async ({ index, updates }: EditOrderProps) => {
-      await new Promise((res) => setTimeout(res, 1000))
-      editOrderInCookies(index, updates)
-      setOrders(getOrdersFromCookies())
-    },
-    onSuccess: () => {
-      toast.info("Pedido atualizado com sucesso!")
-    }
-  })
+  const { data: orders } = useGetOrders()
+  const { mutateAsync: editOrder, isPending, variables } = useEditOrder()
 
   return (
     <div className="space-y-4">
       <h2 className="font-sans">Meus Pedidos</h2>
+
       <ItemGroup className="gap-8">
-        {orders.reverse().map((order, index) => {
+        {orders?.reverse().map((order, index) => {
           const isUpdating = isPending && variables?.index === index
           return (
             <Order
@@ -52,7 +33,7 @@ export default function MyOrdersPage() {
         })}
       </ItemGroup>
 
-      {orders.length === 0 && (
+      {orders?.length === 0 && (
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">

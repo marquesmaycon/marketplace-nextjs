@@ -1,4 +1,4 @@
-import { CheckoutForm } from "./checkout-form"
+import { CheckoutForm } from "@/features/checkout/checkout-form"
 
 export default async function CheckOutPage() {
   return (

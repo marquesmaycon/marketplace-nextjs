@@ -4,6 +4,7 @@ import { Toaster } from "sonner"
 
 import "./globals.css"
 import Providers from "./providers"
+import { Footer } from "@/components/layout/footer"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,11 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}>
         <Providers>{children}</Providers>
-        <footer className="mt-auto pt-16">
-          <span className="flex justify-center p-4 text-sm text-gray-500">
-            &copy; 2025 Maycon Marques. All rights reserved.
-          </span>
-        </footer>
+        <Footer />
         <Toaster richColors />
       </body>
     </html>
