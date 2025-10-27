@@ -1,4 +1,4 @@
-import type { PaymentMethod } from "@/app/(protected)/checkout/form-options"
+import type { PaymentMethod } from "@/features/checkout/form-options"
 
 export type Order = {
   products: Array<{ id: number; quantity: number }>

@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import { LogOut, Logs, UserRound } from "lucide-react"
 
-import { getUserFromCookies } from "@/lib/utils"
-
 import { Button } from "./ui/button"
 import {
   DropdownMenu,
@@ -16,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "./ui/dropdown-menu"
+import { getUserFromCookies } from "@/features/auth/actions"
 
 export function UserMenu() {
   const router = useRouter()

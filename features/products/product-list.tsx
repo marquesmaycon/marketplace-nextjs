@@ -4,7 +4,6 @@ import { useState } from "react"
 import Image from "next/image"
 import { ArrowLeftIcon, ArrowRightIcon, Plus } from "lucide-react"
 
-import { useCart } from "@/contexts/cart-context"
 import { formatPrice } from "@/lib/utils"
 
 import { Badge } from "../../components/ui/badge"
@@ -21,17 +20,18 @@ import {
   ItemTitle
 } from "../../components/ui/item"
 import { useGetProducts } from "./hook"
-import { ItemsSkeleton } from "./products-skeleton"
+import { ProductsSkeleton } from "./products-skeleton"
+import { useAddToCart } from "../cart/hooks"
 
 export function ProductList() {
   const [page, setPage] = useState(1)
 
   const { data, isLoading } = useGetProducts(page)
 
-  const { addItem } = useCart()
+  const { mutateAsync: addToCart, isPending, variables } = useAddToCart()
 
   if (isLoading) {
-    return <ItemsSkeleton />
+    return <ProductsSkeleton />
   }
 
   return (
@@ -39,6 +39,7 @@ export function ProductList() {
       <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {data?.products?.map((product) => {
           const { id, name, description, image, price } = product
+          const isAdding = isPending && variables?.id === id
           return (
             <Item key={id} variant="outline" className="dark:bg-delft-blue/80 group bg-tiffany-blue/10">
               <ItemHeader>
@@ -60,8 +61,8 @@ export function ProductList() {
                 <ItemDescription>{description}</ItemDescription>
               </ItemContent>
               <ItemFooter>
-                <ItemActions>
-                  <Button size="sm" onClick={() => addItem(product)}>
+                <ItemActions className="flex-1">
+                  <Button size="sm" onClick={() => addToCart(product)} loading={isAdding} className="w-full">
                     Adicionar ao carrinho
                     <Plus />
                   </Button>
