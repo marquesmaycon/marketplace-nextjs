@@ -1,5 +1,6 @@
 "use client"
 
+import { useQueryClient } from "@tanstack/react-query"
 import Cookies from "js-cookie"
 import { UserPlus } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -13,10 +14,12 @@ import { useAppForm } from "@/hooks/form"
 
 export default function RegisterPage() {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const form = useAppForm({
     ...registerFormOptions,
     onSubmit: ({ value }) => {
+      queryClient.setQueryData(["user"], { name: value.name, email: value.email })
       Cookies.set("user", JSON.stringify({ name: value.name, email: value.email }))
       router.push("/")
       toast.success("Conta criada com sucesso!")

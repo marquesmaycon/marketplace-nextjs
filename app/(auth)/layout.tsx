@@ -1,22 +1,23 @@
-"use client"
+// "use client"
 
-import Image from "next/image" 
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import Image from "next/image"
 
+// import { useRouter } from "next/navigation"
+// import { useEffect } from "react"
 import { ThemeSwitcher } from "@/components/theme-switcher"
-import { getUserFromCookies } from "@/features/auth/actions"
+import AuthGate from "@/features/auth/auth-gate"
+// import { getUserFromCookies } from "@/features/auth/actions"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
+  // const router = useRouter()
 
-  useEffect(() => {
-    const user = getUserFromCookies()
+  // useEffect(() => {
+  //   const user = getUserFromCookies()
 
-    if (user) {
-      router.push("/")
-    }
-  }, [router])
+  //   if (user) {
+  //     router.push("/")
+  //   }
+  // }, [router])
 
   return (
     <main className="relative grid h-full place-items-center">
@@ -25,7 +26,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
       <div className="space-y-10 py-12">
         <Image src="/logoipsum.svg" alt="Logo" width={150} height={37} className="mx-auto" />
-        {children}
+        <AuthGate type="public">{children}</AuthGate>
       </div>
     </main>
   )
