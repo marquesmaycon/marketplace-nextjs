@@ -24,7 +24,7 @@ export default function RegisterPage() {
   })
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-[350px] sm:w-md">
       <CardHeader>
         <CardTitle className="inline-flex items-center gap-2">
           <UserPlus />

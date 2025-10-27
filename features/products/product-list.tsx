@@ -36,19 +36,19 @@ export function ProductList() {
 
   return (
     <div className="flex h-full flex-col gap-6">
-      <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <ItemGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         {data?.products?.map((product) => {
           const { id, name, description, image, price } = product
           const isAdding = isPending && variables?.id === id
           return (
             <Item key={id} variant="outline" className="dark:bg-delft-blue/80 group bg-tiffany-blue/10">
               <ItemHeader>
-                <div className="w-auto overflow-hidden rounded-sm">
+                <div className="overflow-hidden rounded-sm">
                   <Image
                     src={image}
                     alt={name}
-                    width={400}
-                    height={400}
+                    width={600}
+                    height={600}
                     className="aspect-square rounded-sm object-cover transition-transform duration-400 group-hover:scale-105"
                   />
                 </div>
@@ -72,7 +72,7 @@ export function ProductList() {
           )
         })}
       </ItemGroup>
-      <ButtonGroup className="mt-auto ml-auto">
+      <ButtonGroup className="mt-12 ml-auto">
         <ButtonGroup>
           {Array.from({ length: data?.totalPages || 0 }, (_, i) => i + 1).map((pageNumber) => (
             <Button

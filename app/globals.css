@@ -47,6 +47,19 @@
   --color-delft-blue: hsla(240, 21%, 31%, 1);
   --color-delft-blue-2: hsla(240, 40%, 31%, 1);
   --color-rose-quartz: hsla(276, 12%, 69%, 1);
+
+  --animate-mask-fade: mask-fade 8s ease-in-out infinite;
+
+
+  @keyframes mask-fade {
+    0%, 100% {
+      background-color: hsla(325, 32%, 63%, 0.33);
+      
+    }
+    50% {
+      background-color: hsla(176, 56%, 68%, 0.33)
+    }
+  }
 }
 
 :root {
@@ -164,4 +177,12 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+}
+
+h1 {
+  
+}
+
+.mask-footer {
+  mask-image: radial-gradient(50% 50% at bottom center,black,transparent);
 }
