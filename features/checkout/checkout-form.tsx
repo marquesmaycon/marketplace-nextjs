@@ -59,7 +59,11 @@ export function CheckoutForm() {
         onSuccess: async () => {
           toast.success("Pedido criado com sucesso!")
           form.reset()
-          await clearCart()
+          await clearCart(undefined, {
+            onSuccess: () => {
+              toast.success("Carrinho limpo")
+            }
+          })
           router.push("/my-orders")
           queryClient.invalidateQueries({ queryKey: ["orders"] })
         }

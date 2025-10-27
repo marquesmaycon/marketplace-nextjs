@@ -15,16 +15,21 @@ export async function getOrder(orderIndex: number): Promise<Order | null> {
   return orders[orderIndex] || null
 }
 
-export async function createOrder(order: Order): Promise<void> {
+export async function createOrder(order: Order) {
   await delay()
   const current = await getOrders()
   const updated = [...current, order]
   localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(updated))
 }
 
-export async function editOrder({ index, updates }: EditOrderProps): Promise<void> {
+export async function editOrder({ index, updates }: EditOrderProps) {
   await delay()
   const current = await getOrders()
   const updated = current.map((order, i) => (i === index ? { ...order, ...updates } : order))
   localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(updated))
+}
+
+export async function clearOrders() {
+  await delay(50)
+  localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify([]))
 }

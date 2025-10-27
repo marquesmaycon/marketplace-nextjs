@@ -30,6 +30,6 @@ export async function updateCartItem(id: number, quantity: number): Promise<void
 }
 
 export async function clearCart(): Promise<void> {
-  await delay()
+  await delay(50)
   localStorage.setItem(STORAGE_KEY, JSON.stringify([]))
 }
