@@ -25,8 +25,13 @@ export async function addToCart(item: Product): Promise<void> {
 
 export async function updateCartItem(id: number, quantity: number): Promise<void> {
   const current = await getCart()
-  const updated = current.map((i) => (i.id === id ? { ...i, quantity } : i))
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  if (quantity <= 0) {
+    const filtered = current.filter((i) => i.id !== id)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+  } else {
+    const updated = current.map((i) => (i.id === id ? { ...i, quantity } : i))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  }
 }
 
 export async function clearCart(): Promise<void> {

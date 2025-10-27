@@ -44,9 +44,17 @@ export function Cart() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button size="icon" variant="outline" className="relative">
+        <Button
+          size="icon"
+          variant="outline"
+          className="relative"
+          aria-label={`Carrinho de compras com ${totalItems} ${totalItems === 1 ? "item" : "itens"}`}
+        >
           <ShoppingCart />
-          <Badge className="bg-sky-magenta absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 tabular-nums">
+          <Badge
+            className="bg-sky-magenta absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 tabular-nums"
+            aria-label={`${totalItems} itens no carrinho`}
+          >
             {isLoading ? <Spinner /> : totalItems}
           </Badge>
         </Button>

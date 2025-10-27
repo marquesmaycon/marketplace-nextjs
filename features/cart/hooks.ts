@@ -27,8 +27,12 @@ export const useUpdateCartItem = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (args: { id: number; quantity: number }) => await updateCartItem(args.id, args.quantity),
-    onSuccess: () => {
-      toast.info("Produto atualizado")
+    onSuccess: (_, vars) => {
+      if (vars.quantity <= 0) {
+        toast.warn("Produto removido do carrinho")
+      } else {
+        toast.info("Produto atualizado")
+      }
       queryClient.invalidateQueries({ queryKey: ["cart"] })
     }
   })
