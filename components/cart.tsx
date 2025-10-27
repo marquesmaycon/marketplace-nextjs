@@ -4,6 +4,7 @@ import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingBag, ShoppingCa
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { toast } from "sonner"
 
 import { useCart } from "@/contexts/cart-context"
 import { useClearCart, useUpdateCartItem } from "@/features/cart/hooks"
@@ -100,7 +101,18 @@ export function Cart() {
             </ScrollArea>
 
             <div className="flex items-center justify-between">
-              <Button variant="secondary" size="sm" onClick={() => clearCart()} loading={isClearing}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  clearCart(undefined, {
+                    onSuccess: () => {
+                      toast.success("Carrinho limpo")
+                    }
+                  })
+                }
+                loading={isClearing}
+              >
                 Esvaziar Carrinho
               </Button>
 

@@ -50,12 +50,12 @@ export default function RegisterPage() {
             </form.AppField>
 
             <form.AppField name="password">
-              {({ InputField }) => <InputField label="Password" placeholder="Sua senha" type="password" />}
+              {({ InputField }) => <InputField label="Senha" placeholder="Sua senha" type="password" />}
             </form.AppField>
 
             <form.AppField name="confirmPassword" validators={{ onChangeListenTo: ["password"] }}>
               {({ InputField }) => (
-                <InputField label="Confirm Password" placeholder="Confirme sua senha" type="password" />
+                <InputField label="Confirmar Senha" placeholder="Confirme sua senha" type="password" />
               )}
             </form.AppField>
           </FieldGroup>
