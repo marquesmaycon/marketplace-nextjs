@@ -1,11 +1,12 @@
 "use client"
 
-import Cookies from "js-cookie"
+import { useQueryClient } from "@tanstack/react-query"
 import { LogOut, Logs, UserRound } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
-import { getUserFromCookies } from "@/features/auth/actions"
+import { getUserFromCookies, logoutUser } from "@/features/auth/actions"
 
 import { Button } from "./ui/button"
 import {
@@ -19,12 +20,14 @@ import {
 
 export function UserMenu() {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const user = getUserFromCookies()
 
-  const handleLogout = () => {
-    Cookies.remove("user")
-    Cookies.remove("orders")
+  async function handleLogout() {
+    await logoutUser()
+    queryClient.clear()
+    toast.success("Você saiu")
     router.push("/register")
   }
 

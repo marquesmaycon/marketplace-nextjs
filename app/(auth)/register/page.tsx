@@ -1,57 +1,25 @@
 "use client"
 
-import { revalidateLogic } from "@tanstack/react-form"
 import Cookies from "js-cookie"
 import { UserPlus } from "lucide-react"
-import z from "zod"
-import { pt } from "zod/locales"
-
-z.config(pt())
-
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Separator } from "@/components/ui/separator"
+import { registerFormOptions } from "@/features/auth/register-form-options"
 import { useAppForm } from "@/hooks/form"
-
-const registerSchema = z
-  .object({
-    name: z.string().min(2),
-    email: z.email(),
-    password: z.string().min(6),
-    confirmPassword: z.string().min(6)
-  })
-  .superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
-      ctx.addIssue({
-        code: "custom",
-        message: "As senhas não coincidem",
-        path: ["confirmPassword"]
-      })
-    }
-  })
 
 export default function RegisterPage() {
   const router = useRouter()
 
   const form = useAppForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
-    },
-    validationLogic: revalidateLogic({
-      mode: "submit",
-      modeAfterSubmission: "blur"
-    }),
-    validators: {
-      onSubmit: registerSchema
-    },
+    ...registerFormOptions,
     onSubmit: ({ value }) => {
       Cookies.set("user", JSON.stringify({ name: value.name, email: value.email }))
       router.push("/")
+      toast.success("Conta criada com sucesso!")
     }
   })
 
