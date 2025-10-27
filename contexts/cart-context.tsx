@@ -1,73 +1,32 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from "react"
-import { Product } from "@/types/product"
-import { toast } from "sonner"
+import { createContext, ReactNode, useContext } from "react"
 
-export type CartItem = Product & {
-  quantity: number
-}
+import { type CartItem } from "@/features/cart/actions"
+import { useGetCart } from "@/features/cart/hooks"
 
 type CartContextType = {
   items: CartItem[]
-  addItem: (product: Product) => void
-  removeItem: (productId: number) => void
-  updateQuantity: (productId: number, quantity: number) => void
-  clearCart: () => void
   totalItems: number
   totalPrice: number
+  isLoading: boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
+  const { data: cart, isLoading } = useGetCart()
 
-  const addItem = (product: Product) => {
-    setItems((currentItems) => {
-      const existingItem = currentItems.find((item) => item.id === product.id)
-
-      if (existingItem) {
-        return currentItems.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item))
-      }
-
-      return [...currentItems, { ...product, quantity: 1 }]
-    })
-    toast.success(`${product.name} adicionado ao carrinho`)
-  }
-
-  const removeItem = (productId: number) => {
-    setItems((currentItems) => currentItems.filter((item) => item.id !== productId))
-  }
-
-  const updateQuantity = (productId: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(productId)
-      toast.warning(`Item removido do carrinho`)
-      return
-    }
-
-    setItems((currentItems) => currentItems.map((item) => (item.id === productId ? { ...item, quantity } : item)))
-    toast.info(`Quantidade do item atualizada`)
-  }
-
-  const clearCart = () => {
-    setItems([])
-  }
-
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const totalItems = cart?.reduce((sum, item) => sum + item.quantity, 0) || 0
+  const totalPrice = cart?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0
 
   return (
     <CartContext.Provider
       value={{
-        items,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
+        items: cart || [],
         totalItems,
-        totalPrice
+        totalPrice,
+        isLoading
       }}
     >
       {children}

@@ -8,6 +8,7 @@ import Image from "next/image"
 
 import { useCart } from "@/contexts/cart-context"
 import { formatPrice } from "@/lib/utils"
+import { useClearCart, useUpdateCartItem } from "@/features/cart/hooks"
 
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Button } from "./ui/button"
@@ -17,11 +18,16 @@ import { ScrollArea } from "./ui/scroll-area"
 import { Badge } from "./ui/badge"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty"
 import { Separator } from "./ui/separator"
+import { Spinner } from "./ui/spinner"
 
 export function Cart() {
   const router = useRouter()
+
   const [open, setOpen] = useState(false)
-  const { items, totalItems, totalPrice, updateQuantity, clearCart } = useCart()
+  const { items, totalItems, totalPrice, isLoading } = useCart()
+
+  const { mutateAsync: updateQuantity, isPending: isUpdating, variables } = useUpdateCartItem()
+  const { mutateAsync: clearCart, isPending: isClearing } = useClearCart()
 
   const hasItems = totalItems > 0
 
@@ -40,14 +46,12 @@ export function Cart() {
       <PopoverTrigger asChild>
         <Button size="icon" variant="outline" className="relative">
           <ShoppingCart />
-          {totalItems > 0 && (
-            <Badge className="bg-sky-magenta absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 tabular-nums">
-              {totalItems}
-            </Badge>
-          )}
+          <Badge className="bg-sky-magenta absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 tabular-nums">
+            {isLoading ? <Spinner /> : totalItems}
+          </Badge>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-96 space-y-2" align="end" alignOffset={-100}>
+      <PopoverContent className="h-auto w-96 space-y-2" align="end" alignOffset={-100}>
         <h3 className="text-center font-sans">Seu Carrinho</h3>
         {hasItems && (
           <>
@@ -74,16 +78,18 @@ export function Cart() {
                       <span className="font-mono font-medium">{formatPrice(item.price * item.quantity)}</span>
                       <ButtonGroup aria-label="Item quantity controls" className="h-fit">
                         <Button
-                          variant="secondary"
+                          variant="outline"
                           size="icon-sm"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          disabled={isUpdating && variables?.id === item.id}
+                          onClick={() => updateQuantity({ id: item.id, quantity: item.quantity - 1 })}
                         >
                           <MinusIcon />
                         </Button>
                         <Button
-                          variant="secondary"
+                          variant="outline"
                           size="icon-sm"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          disabled={isUpdating && variables?.id === item.id}
+                          onClick={() => updateQuantity({ id: item.id, quantity: item.quantity + 1 })}
                         >
                           <PlusIcon />
                         </Button>
@@ -95,7 +101,7 @@ export function Cart() {
             </ScrollArea>
 
             <div className="flex items-center justify-between">
-              <Button variant="secondary" size="sm" onClick={clearCart}>
+              <Button variant="secondary" size="sm" onClick={() => clearCart()} loading={isClearing}>
                 Esvaziar Carrinho
               </Button>
 
