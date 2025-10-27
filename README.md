@@ -14,6 +14,10 @@ Sistema completo de e-commerce focado no **fluxo de checkout**, implementando **
 
 ⚠️ **Importante**: Esta é uma aplicação de demonstração. Todos os dados são simulados e armazenados localmente no navegador (localStorage e cookies).
 
+## 🚀 Demo Online
+
+### 🌐 [VER PROJETO AO VIVO](https://marketplace-nextjs.mklly.com.br/register)
+
 ## ✨ Principais Funcionalidades
 
 ### 🔐 **Autenticação Mockada**
