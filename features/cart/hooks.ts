@@ -29,7 +29,7 @@ export const useUpdateCartItem = () => {
     mutationFn: async (args: { id: number; quantity: number }) => await updateCartItem(args.id, args.quantity),
     onSuccess: (_, vars) => {
       if (vars.quantity <= 0) {
-        toast.warn("Produto removido do carrinho")
+        toast.warning("Produto removido do carrinho")
       } else {
         toast.info("Produto atualizado")
       }

@@ -33,7 +33,9 @@ export function CheckoutForm() {
 
   useEffect(() => {
     if (items.length === 0) {
-      router.push("/")
+      setTimeout(() => {
+        router.push("/")
+      }, 500)
     }
   }, [items, router])
 

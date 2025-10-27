@@ -16,7 +16,7 @@ export async function getOrder(orderIndex: number): Promise<Order | null> {
 }
 
 export async function createOrder(order: Order) {
-  await delay()
+  await delay(400)
   const current = await getOrders()
   const updated = [...current, order]
   localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(updated))
