@@ -1,12 +1,18 @@
 import { type ClassValue,clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+import { expirations, type PaymentMethod } from "@/features/checkout/form-options"
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function delay(ms = 600) {
   return new Promise((res) => setTimeout(res, ms))
+}
+
+export function getExpiration(paymentMethod: PaymentMethod) {
+  return new Date(new Date().getTime() + expirations[paymentMethod]).toISOString()
 }
 
 export function formatPrice(price: number) {

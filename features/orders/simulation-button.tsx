@@ -2,9 +2,9 @@ import { Ellipsis } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { getExpiration } from "@/lib/utils"
 import type { Order } from "@/types/order"
 
-import { expirations } from "../checkout/form-options"
 import type { EditOrderProps } from "./actions"
 import { statusMap } from "./order"
 
@@ -33,7 +33,7 @@ export function SimulationButton({ orderIndex, paymentMethod, onEditOrder }: Sim
       <DropdownMenuContent>
         {simulationOptions.map((option) => {
           const status = statusMap[option.status]
-          const expiresAt = expirations[paymentMethod]
+          const expiresAt = getExpiration(paymentMethod)
           return (
             <DropdownMenuItem
               key={option.status}

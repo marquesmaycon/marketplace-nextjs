@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@/components/ui/field"
 import { useCart } from "@/contexts/cart-context"
 import { useAppForm } from "@/hooks/form"
-import { formatCEP, formatCPF, formatPrice } from "@/lib/utils"
+import { formatCEP, formatCPF, formatPrice, getExpiration } from "@/lib/utils"
 import type { Order } from "@/types/order"
 
 import { getUserFromCookies } from "../auth/actions"
@@ -20,7 +20,7 @@ import { useCreateOrder } from "../orders/hooks"
 import { CheckoutDelivery } from "./checkout-delivery"
 import { CheckoutItems } from "./checkout-items"
 import { CreditCardFields } from "./credit-card-fields"
-import { checkOutFormOptions, expirations, type PaymentMethod,paymentMethodsOptions } from "./form-options"
+import { checkOutFormOptions, type PaymentMethod, paymentMethodsOptions } from "./form-options"
 
 export function CheckoutForm() {
   const router = useRouter()
@@ -35,7 +35,7 @@ export function CheckoutForm() {
     if (items.length === 0) {
       setTimeout(() => {
         router.push("/")
-      }, 500)
+      }, 1000)
     }
   }, [items, router])
 
@@ -47,7 +47,7 @@ export function CheckoutForm() {
       email: user?.email || ""
     },
     onSubmit: async ({ value }) => {
-      const expiresAt = expirations[value.paymentMethod as PaymentMethod]
+      const expiresAt = getExpiration(value.paymentMethod as PaymentMethod)
       const order: Order = {
         products: items.map((item) => ({ id: item.id, quantity: item.quantity })),
         totalAmount: totalPrice,

@@ -8,9 +8,9 @@ const paymentMethods = z.enum(["PIX", "CREDIT_CARD", "BOLETO"])
 export type PaymentMethod = z.infer<typeof paymentMethods>
 
 export const expirations = {
-  PIX: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-  CREDIT_CARD: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-  BOLETO: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
+  PIX: 60 * 60 * 1000,
+  CREDIT_CARD: 60 * 60 * 1000,
+  BOLETO: 60 * 60 * 1000
 } as const
 
 export const paymentMethodsOptions: Array<{ value: PaymentMethod; label: string }> = [

@@ -1,3 +1,5 @@
+"use client"
+
 import { Check, Copy, Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -5,9 +7,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getExpiration } from "@/lib/utils"
 import type { Order } from "@/types/order"
 
-import { expirations } from "../checkout/form-options"
 import type { EditOrderProps } from "./actions"
 import { AlertCanceled, AlertPayed, AlertPaymentError } from "./alerts"
 import { useGetOrder } from "./hooks"
@@ -17,7 +19,6 @@ export const paymentMethodMap: Record<
   {
     expiredDescription?: string
     generateDescription?: string
-    expirationTime?: string
     pendingTitle?: string
     pendingDescription?: string
     copyText?: string
@@ -27,7 +28,6 @@ export const paymentMethodMap: Record<
   BOLETO: {
     expiredDescription: "Você não pagou o boleto a tempo",
     generateDescription: "Gerar novo boleto",
-    expirationTime: expirations.BOLETO,
     pendingTitle: "Aguardando pagamento",
     pendingDescription: "Copie o código de barras do boleto para realizar o pagamento",
     copyText: "23793.38128 60000.000008 00000.123456 7 89120000001000",
@@ -36,7 +36,6 @@ export const paymentMethodMap: Record<
   PIX: {
     expiredDescription: "Você não pagou o PIX a tempo",
     generateDescription: "Gerar nova chave PIX",
-    expirationTime: expirations.PIX,
     pendingTitle: "Aguardando pagamento",
     pendingDescription: "Copie a chave PIX para realizar o pagamento",
     copyText: "123e4567-e89b-12d3-a456-426614174000",
@@ -45,7 +44,6 @@ export const paymentMethodMap: Record<
   CREDIT_CARD: {
     expiredDescription: "O tempo para processar o pagamento acabou",
     generateDescription: "Tentar novamente",
-    expirationTime: expirations.CREDIT_CARD,
     component: CreditCardPending
   }
 }
@@ -89,7 +87,7 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
           onGenerate={() =>
             editOrder({
               index: orderIndex,
-              updates: { status: "pending", expiresAt: paymentMeta.expirationTime }
+              updates: { status: "pending", expiresAt: getExpiration(order.paymentMethod) }
             })
           }
           onCancel={() => editOrder({ index: orderIndex, updates: { status: "canceled" } })}
@@ -105,7 +103,7 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
           onGenerate={() =>
             editOrder({
               index: orderIndex,
-              updates: { status: "pending", expiresAt: paymentMeta.expirationTime }
+              updates: { status: "pending", expiresAt: getExpiration(order.paymentMethod) }
             })
           }
           onCancel={() => editOrder({ index: orderIndex, updates: { status: "canceled" } })}
