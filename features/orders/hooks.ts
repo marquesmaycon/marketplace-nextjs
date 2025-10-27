@@ -1,18 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
-import { editOrderInCookies, getOrdersFromCookies } from "@/lib/utils"
-import type { Order } from "@/types/order"
-
-export type EditOrderProps = { index: number; updates: Partial<Order> }
+import { createOrder, editOrder, getOrder, getOrders } from "./actions"
 
 export const useGetOrders = () => {
   return useQuery({
     queryKey: ["orders"],
-    queryFn: async () => {
-      await new Promise((res) => setTimeout(res, 500))
-      return getOrdersFromCookies()
-    }
+    queryFn: getOrders
+  })
+}
+
+export const useGetOrder = (index: number) => {
+  return useQuery({
+    queryKey: ["orders", index],
+    queryFn: () => getOrder(index)
+  })
+}
+
+export const useCreateOrder = () => {
+  return useMutation({
+    mutationFn: createOrder
   })
 }
 
@@ -20,10 +27,7 @@ export const useEditOrder = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ index, updates }: EditOrderProps) => {
-      await new Promise((res) => setTimeout(res, 1000))
-      editOrderInCookies(index, updates)
-    },
+    mutationFn: editOrder,
     onSuccess: () => {
       toast.info("Pedido atualizado com sucesso!")
       queryClient.invalidateQueries({ queryKey: ["orders"] })
