@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect } from "react"
+import Image from "next/image" 
 import { useRouter } from "next/navigation"
-import Image from "next/image"
+import { useEffect } from "react"
 
 import { ThemeSwitcher } from "@/components/theme-switcher"
-import { getUserFromCookies } from "@/lib/utils"
+import { getUserFromCookies } from "@/features/auth/actions"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()

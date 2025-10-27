@@ -1,5 +1,5 @@
-import type { Order } from "@/types/order"
 import { delay } from "@/lib/utils"
+import type { Order } from "@/types/order"
 
 const ORDER_STORAGE_KEY = "orders"
 

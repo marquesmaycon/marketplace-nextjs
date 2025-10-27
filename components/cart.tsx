@@ -1,22 +1,21 @@
 "use client"
 
+import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingBag, ShoppingCart } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-import { ArrowUpRightIcon, Handbag, MinusIcon, PlusIcon, ShoppingBag, ShoppingCart } from "lucide-react"
-import Image from "next/image"
-
 import { useCart } from "@/contexts/cart-context"
-import { formatPrice } from "@/lib/utils"
 import { useClearCart, useUpdateCartItem } from "@/features/cart/hooks"
+import { formatPrice } from "@/lib/utils"
 
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Button } from "./ui/button"
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "./ui/item"
-import { ButtonGroup } from "./ui/button-group"
-import { ScrollArea } from "./ui/scroll-area"
 import { Badge } from "./ui/badge"
+import { Button } from "./ui/button"
+import { ButtonGroup } from "./ui/button-group"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty"
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "./ui/item"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { ScrollArea } from "./ui/scroll-area"
 import { Separator } from "./ui/separator"
 import { Spinner } from "./ui/spinner"
 

@@ -1,18 +1,19 @@
 "use client"
 
 import { revalidateLogic } from "@tanstack/react-form"
+import Cookies from "js-cookie"
+import { UserPlus } from "lucide-react"
 import z from "zod"
 import { pt } from "zod/locales"
-import { UserPlus } from "lucide-react"
-import Cookies from "js-cookie"
 
 z.config(pt())
 
+import { useRouter } from "next/navigation"
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field, FieldGroup } from "@/components/ui/field"
-import { useAppForm } from "@/hooks/form"
 import { Separator } from "@/components/ui/separator"
-import { useRouter } from "next/navigation"
+import { useAppForm } from "@/hooks/form"
 
 const registerSchema = z
   .object({

@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
 import { ArrowLeftIcon, ArrowRightIcon, Plus } from "lucide-react"
+import Image from "next/image"
+import { useState } from "react"
 
 import { formatPrice } from "@/lib/utils"
 
@@ -19,9 +19,9 @@ import {
   ItemHeader,
   ItemTitle
 } from "../../components/ui/item"
+import { useAddToCart } from "../cart/hooks"
 import { useGetProducts } from "./hook"
 import { ProductsSkeleton } from "./products-skeleton"
-import { useAddToCart } from "../cart/hooks"
 
 export function ProductList() {
   const [page, setPage] = useState(1)

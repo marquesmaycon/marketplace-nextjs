@@ -1,9 +1,9 @@
 import Image from "next/image"
 
+import { Badge } from "@/components/ui/badge"
 import { CardContent } from "@/components/ui/card"
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { useCart } from "@/contexts/cart-context"
-import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
 
 export function CheckoutItems() {

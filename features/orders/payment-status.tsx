@@ -1,16 +1,16 @@
 import { Check, Copy, Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
-import type { Order } from "@/types/order"
-import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
+import { Skeleton } from "@/components/ui/skeleton"
+import type { Order } from "@/types/order"
 
-import { AlertCanceled, AlertPayed, AlertPaymentError } from "./alerts"
 import { expirations } from "../checkout/form-options"
 import type { EditOrderProps } from "./actions"
+import { AlertCanceled, AlertPayed, AlertPaymentError } from "./alerts"
 import { useGetOrder } from "./hooks"
-import { Skeleton } from "@/components/ui/skeleton"
 
 export const paymentMethodMap: Record<
   Order["paymentMethod"],

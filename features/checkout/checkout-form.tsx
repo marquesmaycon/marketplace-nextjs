@@ -1,26 +1,26 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import { toast } from "sonner"
 import { Contact, CreditCard, MapPinHouse } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { toast } from "sonner"
 
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { FieldDescription, FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@/components/ui/field"
+import { useCart } from "@/contexts/cart-context"
 import { useAppForm } from "@/hooks/form"
 import { formatCEP, formatCPF, formatPrice } from "@/lib/utils"
-import { useCart } from "@/contexts/cart-context"
-import { Badge } from "@/components/ui/badge"
 import type { Order } from "@/types/order"
 
-import { CheckoutDelivery } from "./checkout-delivery"
-import { CreditCardFields } from "./credit-card-fields"
-import { checkOutFormOptions, expirations, paymentMethodsOptions, type PaymentMethod } from "./form-options"
-import { CheckoutItems } from "./checkout-items"
-import { useClearCart } from "../cart/hooks"
 import { getUserFromCookies } from "../auth/actions"
+import { useClearCart } from "../cart/hooks"
 import { useCreateOrder } from "../orders/hooks"
+import { CheckoutDelivery } from "./checkout-delivery"
+import { CheckoutItems } from "./checkout-items"
+import { CreditCardFields } from "./credit-card-fields"
+import { checkOutFormOptions, expirations, type PaymentMethod,paymentMethodsOptions } from "./form-options"
 
 export function CheckoutForm() {
   const router = useRouter()

@@ -1,5 +1,6 @@
-import type { Product } from "@/types/product"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+
+import type { Product } from "@/types/product"
 
 import { addToCart, clearCart, getCart, updateCartItem } from "./actions"
 

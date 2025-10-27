@@ -1,5 +1,5 @@
-import type { ComponentProps } from "react"
 import { SendHorizonal } from "lucide-react"
+import type { ComponentProps } from "react"
 
 import { useFormContext } from "@/hooks/form-context"
 

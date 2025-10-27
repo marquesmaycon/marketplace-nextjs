@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-import { CartProvider } from "@/contexts/cart-context"
 import { Header } from "@/components/layout/header"
+import { CartProvider } from "@/contexts/cart-context"
 import { getUserFromCookies } from "@/features/auth/actions"
 
 export default function Layout({ children }: { children: React.ReactNode }) {

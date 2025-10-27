@@ -4,8 +4,8 @@ import Link from "next/link"
 import LogoIpsum from "@/public/logoipsum.svg"
 
 import { Cart } from "../cart"
-import { UserMenu } from "../user-menu"
 import { ThemeSwitcher } from "../theme-switcher"
+import { UserMenu } from "../user-menu"
 
 export function Header() {
   return (

@@ -1,20 +1,20 @@
-import { useState } from "react"
-import Image from "next/image"
 import { AlertCircle, ChevronDown, Loader, TriangleAlert, Truck, XCircle } from "lucide-react"
+import Image from "next/image"
+import { useState } from "react"
 
-import { Spinner } from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
 import type { Order } from "@/types/order"
 
-import { SimulationButton } from "./simulation-button"
-import { PaymentStatus } from "./payment-status"
 import { useGetProductsById } from "../products/hook"
 import type { EditOrderProps } from "./actions"
-import { Skeleton } from "@/components/ui/skeleton"
+import { PaymentStatus } from "./payment-status"
+import { SimulationButton } from "./simulation-button"
 
 export const statusMap: Record<Order["status"], { label: string; className: string; icon: React.ReactNode }> = {
   pending: {

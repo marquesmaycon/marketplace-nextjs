@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { Order } from "@/types/order"
 
-import { statusMap } from "./order"
 import { expirations } from "../checkout/form-options"
 import type { EditOrderProps } from "./actions"
+import { statusMap } from "./order"
 
 const simulationOptions: { label: string; status: Order["status"] }[] = [
   { label: "Pagamento pendente", status: "pending" },

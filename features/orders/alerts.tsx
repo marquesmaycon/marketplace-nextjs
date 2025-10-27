@@ -1,5 +1,5 @@
-import type { ComponentProps } from "react"
 import { Ban, CheckCircle, TriangleAlert } from "lucide-react"
+import type { ComponentProps } from "react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
