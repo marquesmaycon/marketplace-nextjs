@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "create-env": "echo NEXT_PUBLIC_APP_URL=http://localhost:3000 > .env.local"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

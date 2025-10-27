@@ -110,13 +110,15 @@ types/                 # Tipos TypeScript
 ### **Instalação**
 ```bash
 # Clone o repositório
-git clone <url-do-repositorio>
+git clone https://github.com/marquesmaycon/marketplace-nextjs
+
+cd marketplace-nextjs
 
 # Instale as dependências
 npm install
 
-# Configure as variáveis de ambiente (opcional)
-cp .env.local.example .env.local
+# Crie as variáveis de ambiente em .env.local (ou faça manualmente como em .env.example)
+npm run create-env
 
 # Execute em modo de desenvolvimento
 npm run dev
