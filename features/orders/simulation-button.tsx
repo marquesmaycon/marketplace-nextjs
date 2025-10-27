@@ -5,8 +5,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import type { Order } from "@/types/order"
 
 import { statusMap } from "./order"
-import type { EditOrderProps } from "./page"
 import { expirations } from "../checkout/form-options"
+import type { EditOrderProps } from "./actions"
 
 const simulationOptions: { label: string; status: Order["status"] }[] = [
   { label: "Pagamento pendente", status: "pending" },

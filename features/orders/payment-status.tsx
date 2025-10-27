@@ -2,14 +2,15 @@ import { Check, Copy, Loader } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group"
-import { getOrderFromCookies } from "@/lib/utils"
 import type { Order } from "@/types/order"
 import { Button } from "@/components/ui/button"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 import { AlertCanceled, AlertPayed, AlertPaymentError } from "./alerts"
-import type { EditOrderProps } from "./page"
 import { expirations } from "../checkout/form-options"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import type { EditOrderProps } from "./actions"
+import { useGetOrder } from "./hooks"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const paymentMethodMap: Record<
   Order["paymentMethod"],
@@ -55,14 +56,22 @@ type PaymentStatusProps = {
 }
 
 export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
-  const order = getOrderFromCookies(orderIndex)
+  const { data: order, isLoading } = useGetOrder(orderIndex)
 
-  const paymentMeta = paymentMethodMap[order.paymentMethod]
-  const PendingComponent = paymentMeta.component
+  const paymentMeta = order ? paymentMethodMap[order.paymentMethod] : null
+  const PendingComponent = paymentMeta?.component
+
+  if (isLoading) {
+    return <Skeleton className="h-36" />
+  }
+
+  if (!order || !PendingComponent) {
+    throw new Error("Ocorreu um erro ao carregar o pedido")
+  }
 
   return (
     <div className="space-y-6">
-      {order.status === "pending" && (
+      {order?.status === "pending" && (
         <PendingComponent
           orderIndex={orderIndex}
           onExpired={() => editOrder({ index: orderIndex, updates: { status: "expired" } })}
@@ -71,7 +80,7 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
         />
       )}
 
-      {order.status === "expired" && (
+      {order?.status === "expired" && (
         <AlertPaymentError
           className="text-yellow-500"
           title="O seu pagamento expirou"
@@ -87,7 +96,7 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
         />
       )}
 
-      {order.status === "failed" && (
+      {order?.status === "failed" && (
         <AlertPaymentError
           className="text-orange-500"
           title="O seu pagamento falhou"
@@ -103,9 +112,9 @@ export function PaymentStatus({ orderIndex, editOrder }: PaymentStatusProps) {
         />
       )}
 
-      {order.status === "payed" && <AlertPayed />}
+      {order?.status === "payed" && <AlertPayed />}
 
-      {order.status === "canceled" && <AlertCanceled />}
+      {order?.status === "canceled" && <AlertCanceled />}
     </div>
   )
 }

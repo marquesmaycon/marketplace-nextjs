@@ -9,17 +9,20 @@ import { Button } from "@/components/ui/button"
 
 import { useEditOrder, useGetOrders } from "@/features/orders/hooks"
 import { Order } from "@/features/orders/order"
+import { OrdersSkeleton } from "@/features/orders/orders-skeleton"
 
 export default function MyOrdersPage() {
-  const { data: orders } = useGetOrders()
+  const { data: orders, isLoading } = useGetOrders()
   const { mutateAsync: editOrder, isPending, variables } = useEditOrder()
 
   return (
-    <div className="space-y-4">
+    <div className="h-full space-y-4">
       <h2 className="font-sans">Meus Pedidos</h2>
 
+      {isLoading && <OrdersSkeleton />}
+
       <ItemGroup className="gap-8">
-        {orders?.reverse().map((order, index) => {
+        {orders?.map((order, index) => {
           const isUpdating = isPending && variables?.index === index
           return (
             <Order
@@ -44,7 +47,7 @@ export default function MyOrdersPage() {
           </EmptyHeader>
           <EmptyContent>
             <Link href="/">
-              <Button variant="link" size="sm">
+              <Button variant="link" size="sm" className="dark:text-foreground">
                 Página de produtos <ArrowUpRightIcon />
               </Button>
             </Link>

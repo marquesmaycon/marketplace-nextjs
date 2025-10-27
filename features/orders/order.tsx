@@ -12,8 +12,9 @@ import type { Order } from "@/types/order"
 
 import { SimulationButton } from "./simulation-button"
 import { PaymentStatus } from "./payment-status"
-import type { EditOrderProps } from "./hooks"
 import { useGetProductsById } from "../products/hook"
+import type { EditOrderProps } from "./actions"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const statusMap: Record<Order["status"], { label: string; className: string; icon: React.ReactNode }> = {
   pending: {
@@ -52,10 +53,8 @@ type OrderProps = Order & {
 export function Order({ orderIndex, products, orderDate, status, editOrder, isUpdating, paymentMethod }: OrderProps) {
   const [open, setOpen] = useState(false)
 
-  const { data: productsList, isLoading } = useGetProductsById(
-    products.map(({ id }) => id),
-    open
-  )
+  const productsIds = products.map(({ id }) => id)
+  const { data: productsList, isLoading } = useGetProductsById(productsIds, open)
 
   const statusInfo = statusMap[status]
 
@@ -75,7 +74,7 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
           </ItemContent>
           <ItemActions>
             <CollapsibleTrigger asChild>
-              <Button type="button">
+              <Button type="button" size="sm">
                 Abrir <ChevronDown className="transition-transform group-data-[state=open]:rotate-180" />
               </Button>
             </CollapsibleTrigger>
@@ -89,9 +88,9 @@ export function Order({ orderIndex, products, orderDate, status, editOrder, isUp
           <Separator />
 
           <h4 className="font-semibold">Itens do pedido:</h4>
-          {isLoading && <Spinner />}
 
           <ItemGroup className="grid gap-4 md:grid-cols-2">
+            {isLoading && <Skeleton className="h-20 w-full" />}
             {productsList?.map((product) => {
               const quantity = products.find((p) => p.id === product.id)?.quantity || 0
               return (
