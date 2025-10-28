@@ -69,7 +69,7 @@ export function Cart() {
                   <Item key={item.id} className="bg-rose-quartz/20">
                     <ItemMedia>
                       <Image
-                        src="https://picsum.photos/200"
+                        src={item.image}
                         width={75}
                         height={75}
                         alt="product img"
